@@ -1,5 +1,9 @@
 <?php namespace util\log\layout;
 
+use lang\IllegalArgumentException;
+use util\log\LoggingEvent;
+use util\log\LogLevel;
+
 /**
  * Pattern layout
  *
@@ -8,18 +12,17 @@
  * The format string consists of format tokens preceded by a percent
  * sign (%) and any other character. The following format tokens are 
  * supported:
- * <ul>
- *   <li>%m - Message</li>
- *   <li>%c - Category name</li>
- *   <li>%l - Log level - lowercase</li>
- *   <li>%L - Log level - uppercase</li>
- *   <li>%d - Date in YYYY-MM-DD</li>
- *   <li>%t - Time in HH:MM:SS</li>
- *   <li>%p - Process ID</li>
- *   <li>%% - A literal percent sign (%)</li>
- *   <li>%n - A line break</li>
- *   <li>%x - Context information, if available</li>
- * </ul>
+ *
+ * - %m - Message
+ * - %c - Category name
+ * - %l - Log level - lowercase
+ * - %L - Log level - uppercase
+ * - %d - Date in YYYY-MM-DD
+ * - %t - Time in HH:MM:SS
+ * - %p - Process ID
+ * - %% - A literal percent sign (%)
+ * - %n - A line break
+ * - %x - Context information, if available
  *
  * @test    xp://net.xp_framework.unittest.logging.PatternLayoutTest
  */
@@ -29,13 +32,14 @@ class PatternLayout extends \util\log\Layout {
   /**
    * Creates a new pattern layout
    *
-   * @param   string format
+   * @param  string $format
+   * @throws lang.IllegalArgumentException
    */
   public function __construct($format) {
     for ($i= 0, $s= strlen($format); $i < $s; $i++) {
       if ('%' === $format{$i}) {
         if (++$i >= $s) {
-          throw new \lang\IllegalArgumentException('Not enough input at position '.($i - 1));
+          throw new IllegalArgumentException('Not enough input at position '.($i - 1));
         }
         switch ($format{$i}) {
           case '%': {   // Literal percent
@@ -48,7 +52,7 @@ class PatternLayout extends \util\log\Layout {
           }
           default: {    // Any other character - verify it's supported
             if (!strspn($format{$i}, 'mclLtdpx')) {
-              throw new \lang\IllegalArgumentException('Unknown format token "'.$format{$i}.'"');
+              throw new IllegalArgumentException('Unknown format token "'.$format{$i}.'"');
             }
             $this->format[]= '%'.$format{$i};
           }
@@ -65,7 +69,7 @@ class PatternLayout extends \util\log\Layout {
    * @param   util.log.LoggingEvent event
    * @return  string
    */
-  public function format(\util\log\LoggingEvent $event) {
+  public function format(LoggingEvent $event) {
     $out= '';
     foreach ($this->format as $token) {
       switch ($token) {
@@ -73,8 +77,8 @@ class PatternLayout extends \util\log\Layout {
         case '%t': $out.= gmdate('H:i:s', $event->getTimestamp()); break;
         case '%d': $out.= gmdate('Y-m-d', $event->getTimestamp()); break;
         case '%c': $out.= $event->getCategory()->identifier; break;
-        case '%l': $out.= strtolower(\util\log\LogLevel::nameOf($event->getLevel())); break;
-        case '%L': $out.= strtoupper(\util\log\LogLevel::nameOf($event->getLevel())); break;
+        case '%l': $out.= strtolower(LogLevel::nameOf($event->getLevel())); break;
+        case '%L': $out.= strtoupper(LogLevel::nameOf($event->getLevel())); break;
         case '%p': $out.= $event->getProcessId(); break;
         case '%x': $out.= null == ($context= $event->getContext()) ? '' : $context->format(); break;
         default: $out.= $token;
