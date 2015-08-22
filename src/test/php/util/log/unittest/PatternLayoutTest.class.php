@@ -56,6 +56,11 @@ class PatternLayoutTest extends \unittest\TestCase {
   }
 
   #[@test]
+  public function date_in_YYYY_MM_DD() {
+    $this->assertEquals('2009-11-20', (new PatternLayout('%d'))->format($this->newLoggingEvent()));
+  }
+
+  #[@test]
   public function time_in_HH_MM_SS() {
     $this->assertEquals('16:08:04', (new PatternLayout('%t'))->format($this->newLoggingEvent()));
   }

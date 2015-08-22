@@ -13,6 +13,7 @@
  *   <li>%c - Category name</li>
  *   <li>%l - Log level - lowercase</li>
  *   <li>%L - Log level - uppercase</li>
+ *   <li>%d - Date in YYYY-MM-DD</li>
  *   <li>%t - Time in HH:MM:SS</li>
  *   <li>%p - Process ID</li>
  *   <li>%% - A literal percent sign (%)</li>
@@ -46,7 +47,7 @@ class PatternLayout extends \util\log\Layout {
             break;
           }
           default: {    // Any other character - verify it's supported
-            if (!strspn($format{$i}, 'mclLtpx')) {
+            if (!strspn($format{$i}, 'mclLtdpx')) {
               throw new \lang\IllegalArgumentException('Unknown format token "'.$format{$i}.'"');
             }
             $this->format[]= '%'.$format{$i};
@@ -70,6 +71,7 @@ class PatternLayout extends \util\log\Layout {
       switch ($token) {
         case '%m': $out.= implode(' ', array_map([$this, 'stringOf'], $event->getArguments())); break;
         case '%t': $out.= gmdate('H:i:s', $event->getTimestamp()); break;
+        case '%d': $out.= gmdate('Y-m-d', $event->getTimestamp()); break;
         case '%c': $out.= $event->getCategory()->identifier; break;
         case '%l': $out.= strtolower(\util\log\LogLevel::nameOf($event->getLevel())); break;
         case '%L': $out.= strtoupper(\util\log\LogLevel::nameOf($event->getLevel())); break;

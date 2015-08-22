@@ -68,6 +68,7 @@ supported:
 * `%c` - Category name
 * `%l` - Log level - lowercase
 * `%L` - Log level - uppercase
+* `%d` - Date in YYYY-MM-DD
 * `%t` - Time in HH:MM:SS
 * `%p` - Process ID
 * `%%` - A literal percent sign (%)
