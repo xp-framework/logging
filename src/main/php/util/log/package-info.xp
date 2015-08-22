@@ -32,8 +32,6 @@
  *   
  *   $cat->debug('Log message');
  * </code>
- *
- * @see      http://news.xp-framework.net/article/203/2007/07/18/
  */
 package util.log {
 }
