@@ -130,6 +130,7 @@ class LogCategory extends \lang\Object {
   /**
    * Finalize
    *
+   * @return void
    */
   public function finalize() {
     foreach ($this->_appenders as $flags => $appenders) {
