@@ -1,5 +1,7 @@
 <?php namespace util\log;
 
+use io\streams\OutputStream;
+
 /**
  * StreamAppender which appends data to a stream
  *
@@ -12,16 +14,16 @@ class StreamAppender extends Appender {
   /**
    * Constructor
    *
-   * @param   io.streams.OutputStream stream
+   * @param  io.streams.OutputStream $stream
    */
-  public function __construct(\io\streams\OutputStream $stream) {
+  public function __construct(OutputStream $stream) {
     $this->stream= $stream;
   }
   
   /**
    * Append data
    *
-   * @param   util.log.LoggingEvent event
+   * @param  util.log.LoggingEvent $event
    */ 
   public function append(LoggingEvent $event) {
     $this->stream->write($this->layout->format($event));

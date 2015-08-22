@@ -3,6 +3,7 @@ Logging change log
 
 ## ?.?.? / ????-??-??
 
+* Fixed util.log.LogObserver not accepting LogCategory instances - @thekid
 * Implemented PR #1: Patternlayout: %d for dates - @thekid
 
 ## 6.4.2 / 2015-08-22
