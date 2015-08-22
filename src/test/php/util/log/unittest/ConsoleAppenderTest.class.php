@@ -24,7 +24,7 @@ class ConsoleAppenderTest extends TestCase {
    */
   public function setUp() {
     $this->cat= (new LogCategory('default'))->withAppender(
-      (new ConsoleAppender())->withLayout(newinstance(Layout::class, [], [
+      (new ConsoleAppender())->withLayout(newinstance('util.log.Layout', [], [
         'format' => function(LoggingEvent $event) {
           return implode(' ', $event->getArguments());
         }
