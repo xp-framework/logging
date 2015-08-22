@@ -64,3 +64,8 @@ supported:
 * `%%` - A literal percent sign (%)
 * `%n` - A line break
 * `%x` - Context information, if available
+
+Further reading
+---------------
+* [Log Contexts](https://github.com/xp-framework/xp-framework/pull/239)
+* [Support for rolling file names](https://github.com/xp-framework/xp-framework/pull/353)
