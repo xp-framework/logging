@@ -1,14 +1,11 @@
 <?php namespace util\log\context;
 
-use util\log\Context;
-
-
 /**
  * Mapped Log Context
  *
  * @see http://logging.apache.org/log4j/1.2/apidocs/org/apache/log4j/MDC.html
  */
-class MappedLogContext extends \lang\Object implements Context {
+class MappedLogContext extends \lang\Object implements \util\log\Context {
   protected $queue= [];
 
   /**

@@ -1,13 +1,11 @@
 <?php namespace util\log\context;
 
-use util\log\Context;
-
 /**
  * Nested Log Context
  *
  * @see http://logging.apache.org/log4j/1.2/apidocs/org/apache/log4j/NDC.html
  */
-class NestedLogContext extends \lang\Object implements Context {
+class NestedLogContext extends \lang\Object implements \util\log\Context {
   protected $queue= [];
 
   /**
