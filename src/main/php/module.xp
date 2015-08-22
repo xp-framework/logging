@@ -1,0 +1,10 @@
+<?php namespace util\log;
+
+use lang\ClassLoader;
+
+module xp-framework/logging {
+
+  public function initialize() {
+    ClassLoader::registerLoader($this->classLoader(), true);
+  }
+}
