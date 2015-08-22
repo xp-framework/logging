@@ -34,6 +34,7 @@ try {
 
 Appenders
 ---------
+The following appenders are available:
 
 * `util.log.FileAppender` - Logs to a local file
 * `util.log.ConsoleAppender` - Logs to console
@@ -42,3 +43,24 @@ Appenders
 * `util.log.StreamAppender` - Logs to any output stream from `io.streams`.
 * `util.log.SyslogAppender` - Logs using syslog facility
 * `util.log.BufferedAppender` - Logs to a memory buffer
+
+Layout
+------
+The default log layout includes time, pid, level and message implemented by the `util.log.layout.DefaultLayout` class. It renders as follows:
+
+```
+[13:43:39  4368  info] Starting application
+```
+
+The log layout can be changed by instantiating the `util.log.layout.PatternLayout`, passing a format string and using the appenders `setLayout()` method to use it. The format string consists of format tokens preceded by a percent sign (%) and any other character. The following format tokens are 
+supported:
+
+* `%m` - Message
+* `%c` - Category name
+* `%l` - Log level - lowercase
+* `%L` - Log level - uppercase
+* `%t` - Time in HH:MM:SS
+* `%p` - Process ID
+* `%%` - A literal percent sign (%)
+* `%n` - A line break
+* `%x` - Context information, if available
