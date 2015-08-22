@@ -9,9 +9,6 @@ use util\log\Context;
 use util\log\layout\PatternLayout;
 use util\log\context\NestedLogContext;
 
-/**
- * Tests LogCategory class
- */
 class LogCategoryTest extends \unittest\TestCase {
   
   /**

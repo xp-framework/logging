@@ -5,9 +5,6 @@ use util\log\Appender;
 use util\log\LoggingEvent;
 use util\log\LogCategory;
 
-/**
- * TestCase for AppenderTest
- */
 abstract class AppenderTest extends TestCase {
 
   /**

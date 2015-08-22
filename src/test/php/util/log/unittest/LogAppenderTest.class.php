@@ -7,14 +7,8 @@ use util\log\LoggingEvent;
 use util\log\layout\PatternLayout;
 use util\collections\Vector;
 
-/**
- * TestCase
- *
- * @see      xp://util.log.Appender
- */
 class LogAppenderTest extends TestCase {
-  protected $fixture= null;
-  protected $events= null;
+  private $fixture, $events;
 
   /**
    * Sets up test case

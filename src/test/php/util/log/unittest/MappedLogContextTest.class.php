@@ -8,11 +8,7 @@ use util\log\context\MappedLogContext;
 class MappedLogContextTest extends \unittest\TestCase {
   private $context;
 
-  /**
-   * Sets up test case
-   *
-   * @return void
-   */
+  /** @return void */
   public function setUp() {
     $this->context= new MappedLogContext();
   }

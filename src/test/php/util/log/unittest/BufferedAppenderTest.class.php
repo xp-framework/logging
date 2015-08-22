@@ -3,12 +3,6 @@
 use util\log\BufferedAppender;
 use util\log\layout\PatternLayout;
 
-
-/**
- * TestCase for BufferedAppender
- *
- * @see   xp://util.log.BufferedAppender
- */
 class BufferedAppenderTest extends AppenderTest {
 
   /**
@@ -16,21 +10,15 @@ class BufferedAppenderTest extends AppenderTest {
    *
    * @return  util.log.BufferedAppender
    */
-  protected function newFixture() {
+  private function newFixture() {
     return (new BufferedAppender())->withLayout(new PatternLayout("[%l] %m\n"));
   }
 
-  /**
-   * Test append() method
-   */
   #[@test]
   public function buffer_initially_empty() {
     $this->assertEquals('', $this->newFixture()->getBuffer());
   }
 
-  /**
-   * Test append() method
-   */
   #[@test]
   public function append_one_message() {
     $fixture= $this->newFixture();
@@ -41,9 +29,6 @@ class BufferedAppenderTest extends AppenderTest {
     );
   }
 
-  /**
-   * Test append() method
-   */
   #[@test]
   public function append_two_messages() {
     $fixture= $this->newFixture();
@@ -55,9 +40,6 @@ class BufferedAppenderTest extends AppenderTest {
     );
   }
 
-  /**
-   * Test clear() method
-   */
   #[@test]
   public function clear() {
     $fixture= $this->newFixture();
@@ -65,9 +47,6 @@ class BufferedAppenderTest extends AppenderTest {
     $this->assertEquals('', $fixture->getBuffer());
   }
 
-  /**
-   * Test clear() method
-   */
   #[@test]
   public function clear_after_appending() {
     $fixture= $this->newFixture();

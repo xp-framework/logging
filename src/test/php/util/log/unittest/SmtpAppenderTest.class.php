@@ -1,13 +1,9 @@
 <?php namespace util\log\unittest;
 
 use util\log\SmtpAppender;
+use util\log\LogLevel;
 use util\log\layout\PatternLayout;
 
-/**
- * TestCase for SmtpAppender
- *
- * @see   xp://util.log.SmtpAppender
- */
 class SmtpAppenderTest extends AppenderTest {
 
   /**
@@ -30,15 +26,15 @@ class SmtpAppenderTest extends AppenderTest {
   #[@test]
   public function append_sync() {
     $fixture= $this->newFixture('test', $sync= true);
-    $fixture->append($this->newEvent(\util\log\LogLevel::WARN, 'Test'));
+    $fixture->append($this->newEvent(LogLevel::WARN, 'Test'));
     $this->assertEquals([['test', '[warn] Test']], $fixture->sent);
   }
 
   #[@test]
   public function append_sync_two_messages() {
     $fixture= $this->newFixture('test', $sync= true);
-    $fixture->append($this->newEvent(\util\log\LogLevel::WARN, 'Test'));
-    $fixture->append($this->newEvent(\util\log\LogLevel::INFO, 'Just testing'));
+    $fixture->append($this->newEvent(LogLevel::WARN, 'Test'));
+    $fixture->append($this->newEvent(LogLevel::INFO, 'Just testing'));
     $this->assertEquals(
       [['test', '[warn] Test'], ['test', '[info] Just testing']],
       $fixture->sent
@@ -48,7 +44,7 @@ class SmtpAppenderTest extends AppenderTest {
   #[@test]
   public function finalize_sync() {
     $fixture= $this->newFixture('test', $sync= true);
-    $fixture->append($this->newEvent(\util\log\LogLevel::WARN, 'Test'));
+    $fixture->append($this->newEvent(LogLevel::WARN, 'Test'));
     $sent= $fixture->sent;
     $fixture->finalize();
     $this->assertEquals($sent, $fixture->sent);
@@ -57,7 +53,7 @@ class SmtpAppenderTest extends AppenderTest {
   #[@test]
   public function append_async() {
     $fixture= $this->newFixture('test', $sync= false);
-    $fixture->append($this->newEvent(\util\log\LogLevel::WARN, 'Test'));
+    $fixture->append($this->newEvent(LogLevel::WARN, 'Test'));
     $this->assertEquals([], $fixture->sent);
   }
 
@@ -71,7 +67,7 @@ class SmtpAppenderTest extends AppenderTest {
   #[@test]
   public function finalize_async() {
     $fixture= $this->newFixture('test', $sync= false);
-    $fixture->append($this->newEvent(\util\log\LogLevel::WARN, 'Test'));
+    $fixture->append($this->newEvent(LogLevel::WARN, 'Test'));
     $fixture->finalize();
     $this->assertEquals(
       [['test [1 entries]', "[warn] Test\n"]],
@@ -82,8 +78,8 @@ class SmtpAppenderTest extends AppenderTest {
   #[@test]
   public function finalize_async_two_messages() {
     $fixture= $this->newFixture('test', $sync= false);
-    $fixture->append($this->newEvent(\util\log\LogLevel::WARN, 'Test'));
-    $fixture->append($this->newEvent(\util\log\LogLevel::INFO, 'Just testing'));
+    $fixture->append($this->newEvent(LogLevel::WARN, 'Test'));
+    $fixture->append($this->newEvent(LogLevel::INFO, 'Just testing'));
     $fixture->finalize();
     $this->assertEquals(
       [['test [2 entries]', "[warn] Test\n[info] Just testing\n"]],

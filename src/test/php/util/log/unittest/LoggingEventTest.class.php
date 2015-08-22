@@ -4,19 +4,10 @@ use util\log\LoggingEvent;
 use util\log\LogCategory;
 use util\log\LogLevel;
 
-/**
- * TestCase
- *
- * @see      xp://util.log.LoggingEvent
- */
 class LoggingEventTest extends \unittest\TestCase {
-  protected $fixture= null;
+  private $fixture;
 
-  /**
-   * Creates fixture
-   *
-   * @return void
-   */
+  /** @return void */
   public function setUp() {
     $this->fixture= new LoggingEvent(
       new LogCategory('default', null, null, 0), 

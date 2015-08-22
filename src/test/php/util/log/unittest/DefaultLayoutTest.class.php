@@ -6,30 +6,17 @@ use util\log\LoggingEvent;
 use util\log\LogCategory;
 use util\log\LogLevel;
 
-/**
- * TestCase for DefaultLayout
- *
- * @see   xp://util.log.layout.DefaultLayout
- */
 class DefaultLayoutTest extends \unittest\TestCase {
   private $fixture, $tz;
 
-  /**
-   * Sets up test case.
-   *
-   * @return void
-   */
+  /** @return void */
   public function setUp() {
     $this->fixture= new DefaultLayout();
     $this->tz= date_default_timezone_get();
     date_default_timezone_set('Europe/Berlin');
   }
 
-  /**
-   * Tears down test
-   *
-   * @return void
-   */
+  /** @return void */
   public function tearDown() {
     date_default_timezone_set($this->tz);
   }
@@ -46,9 +33,6 @@ class DefaultLayoutTest extends \unittest\TestCase {
   }
 
 
-  /**
-   * Test format() method
-   */
   #[@test]
   public function debug() {
     $this->assertEquals(
@@ -57,9 +41,6 @@ class DefaultLayoutTest extends \unittest\TestCase {
     );
   }
 
-  /**
-   * Test format() method
-   */
   #[@test]
   public function info() {
     $this->assertEquals(
@@ -68,9 +49,6 @@ class DefaultLayoutTest extends \unittest\TestCase {
     );
   }
 
-  /**
-   * Test format() method
-   */
   #[@test]
   public function warn() {
     $this->assertEquals(
@@ -79,9 +57,6 @@ class DefaultLayoutTest extends \unittest\TestCase {
     );
   }
 
-  /**
-   * Test format() method
-   */
   #[@test]
   public function error() {
     $this->assertEquals(

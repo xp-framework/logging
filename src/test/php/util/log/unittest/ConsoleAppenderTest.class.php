@@ -15,12 +15,12 @@ use io\streams\MemoryOutputStream;
  * @see   xp://util.log.ConsoleAppender
  */
 class ConsoleAppenderTest extends TestCase {
-  protected $cat= null;
-  protected $stream= null;
+  private $cat, $stream;
 
   /**
    * Sets up test case and backups Console::$err stream.
    *
+   * @return void
    */
   public function setUp() {
     $this->cat= (new LogCategory('default'))->withAppender(
@@ -36,15 +36,12 @@ class ConsoleAppenderTest extends TestCase {
   /**
    * Restores Console::$err stream.
    *
+   * @return void
    */
   public function tearDown() {
     Console::$err->setStream($this->stream);
   }
 
-  /**
-   * Test
-   *
-   */
   #[@test]
   public function appendMessage() {
     with ($message= 'Test', $stream= new MemoryOutputStream()); {
