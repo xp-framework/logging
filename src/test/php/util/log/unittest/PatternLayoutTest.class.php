@@ -6,39 +6,17 @@ use util\log\LoggingEvent;
 use util\log\LogLevel;
 use util\log\LogCategory;
 
-/**
- * TestCase
- *
- * @see      xp://util.log.layout.PatternLayout
- */
 class PatternLayoutTest extends \unittest\TestCase {
 
   /**
-   * Test illegal format token %Q
-   * 
-   */
-  #[@test, @expect('lang.IllegalArgumentException')]
-  public function illegalFormatToken() {
-    new PatternLayout('%Q');
-  }
- 
-  /**
-   * Test unterminated format token
-   * 
-   */
-  #[@test, @expect('lang.IllegalArgumentException')]
-  public function unterminatedFormatToken() {
-    new PatternLayout('%');
-  }
-  
-  /**
    * Creates a new logging event
    *
-   * @return  util.log.LoggingEvent
+   * @param  util.log.LogCategory $cat
+   * @return util.log.LoggingEvent
    */
-  protected function newLoggingEvent() {
+  private function newLoggingEvent($cat= null) {
     return new LoggingEvent(
-      new LogCategory('default'), 
+      $cat ?: new LogCategory('default'), 
       1258733284, 
       1214, 
       LogLevel::WARN, 
@@ -46,10 +24,16 @@ class PatternLayoutTest extends \unittest\TestCase {
     );   
   }
 
-  /**
-   * Test literal percent
-   * 
-   */
+  #[@test, @expect('lang.IllegalArgumentException')]
+  public function illegalFormatToken() {
+    new PatternLayout('%Q');
+  }
+
+  #[@test, @expect('lang.IllegalArgumentException')]
+  public function unterminatedFormatToken() {
+    new PatternLayout('%');
+  }
+
   #[@test]
   public function literalPercent() {
     $this->assertEquals(
@@ -58,12 +42,6 @@ class PatternLayoutTest extends \unittest\TestCase {
     );
   }
 
-  /**
-   * Test simple format:
-   * <pre>
-   *   INFO [default] Hello
-   * </pre>
-   */
   #[@test]
   public function simpleFormat() {
     $this->assertEquals(
@@ -72,12 +50,6 @@ class PatternLayoutTest extends \unittest\TestCase {
     );
   }
 
-  /**
-   * Test default format:
-   * <pre>
-   *   [16:08:04 1214 warn] Hello
-   * </pre>
-   */
   #[@test]
   public function defaultFormat() {
     $this->assertEquals(
@@ -86,26 +58,14 @@ class PatternLayoutTest extends \unittest\TestCase {
     );
   }
 
-  /**
-   * Test format token %x
-   *
-   */
   #[@test]
   public function tokenContext() {
     $context= new MappedLogContext();
     $context->put('key1', 'val1');
 
-    $event= new LoggingEvent(
-      new LogCategory('default', LogLevel::ALL, $context),
-      1258733284,
-      1,
-      LogLevel::INFO,
-      ['Hello']
-    );
-
     $this->assertEquals(
       'key1=val1',
-      (new PatternLayout('%x'))->format($event)
+      (new PatternLayout('%x'))->format($this->newLoggingEvent(new LogCategory('default', LogLevel::ALL, $context)))
     );
   }
 }
