@@ -45,13 +45,13 @@ Appenders
 ---------
 The following appenders are available:
 
-* `util.log.FileAppender` - Logs to a local file
-* `util.log.ConsoleAppender` - Logs to console
-* `util.log.ColoredConsoleAppender` - Logs to console using colors depending on log level
-* `util.log.SmtpAppender` - Logs by email to a given email address
-* `util.log.StreamAppender` - Logs to any output stream from `io.streams`.
-* `util.log.SyslogAppender` - Logs using syslog facility
-* `util.log.BufferedAppender` - Logs to a memory buffer
+* `util.log.FileAppender(string $filename)` - Logs to a local file
+* `util.log.ConsoleAppender()` - Logs to console
+* `util.log.ColoredConsoleAppender()` - Logs to console using colors depending on log level
+* `util.log.SmtpAppender(string $email, string $prefix= "", bool $sync= true)` - Logs by email to a given email address
+* `util.log.StreamAppender(io.streams.OutputStream $out)` - Logs to any output stream from `io.streams`.
+* `util.log.SyslogAppender(string $identifier, int $facility= LOG_USER)` - Logs using syslog facility
+* `util.log.BufferedAppender()` - Logs to a memory buffer
 
 Layout
 ------
