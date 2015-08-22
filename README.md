@@ -32,6 +32,15 @@ try {
 }
 ```
 
+Levels
+------
+This library supports the following levels: DEBUG, INFO, WARN and ERROR. As seen above, messages can be logged using methods named after these levels. All methods have a *printf*-style variant:
+
+* `debug(var... $args)` and `debugf(string $format, var... $args)`.
+* `info(var... $args)` and `infof(string $format, var... $args)`.
+* `warn(var... $args)` and `warnf(string $format, var... $args)`.
+* `error(var... $args)` and `errorf(string $format, var... $args)`.
+
 Appenders
 ---------
 The following appenders are available:
