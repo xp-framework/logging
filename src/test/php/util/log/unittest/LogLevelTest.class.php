@@ -1,9 +1,9 @@
 <?php namespace util\log\unittest;
 
-use unittest\TestCase;
 use util\log\LogLevel;
+use lang\IllegalArgumentException;
 
-class LogLevelTest extends TestCase {
+class LogLevelTest extends \unittest\TestCase {
 
   #[@test]
   public function named_info() {
@@ -30,7 +30,7 @@ class LogLevelTest extends TestCase {
     $this->assertEquals(LogLevel::ALL, LogLevel::named('ALL'));
   }
 
-  #[@test, @expect('lang.IllegalArgumentException')]
+  #[@test, @expect(IllegalArgumentException::class)]
   public function unknown() {
     LogLevel::named('@UNKNOWN@');
   }
@@ -55,7 +55,7 @@ class LogLevelTest extends TestCase {
     $this->assertEquals('DEBUG', LogLevel::nameOf(LogLevel::DEBUG));
   }
 
-  #[@test, @expect('lang.IllegalArgumentException')]
+  #[@test, @expect(IllegalArgumentException::class)]
   public function nameOf_illegal_loglevel() {
     LogLevel::nameOf(-1);
   }
