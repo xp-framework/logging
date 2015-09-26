@@ -1,5 +1,10 @@
 <?php namespace util\log\unittest;
  
+use util\log\LogCategory;
+use util\Configurable;
+use util\log\FileAppender;
+use util\log\SmtpAppender;
+use util\log\context\NestedLogContext;
 use util\log\Logger;
 
 /**
@@ -31,14 +36,14 @@ class LoggerTest extends \unittest\TestCase {
   #[@test]
   public function defaultCategory() {
     with ($cat= $this->logger->getCategory()); {
-      $this->assertInstanceOf('util.log.LogCategory', $cat);
+      $this->assertInstanceOf(LogCategory::class, $cat);
       $this->assertFalse($cat->hasAppenders());
     }
   }
 
   #[@test]
   public function isConfigurable() {
-    $this->assertInstanceOf('util.Configurable', $this->logger);
+    $this->assertInstanceOf(Configurable::class, $this->logger);
   }
 
   #[@test]
@@ -57,13 +62,13 @@ appender.util.log.FileAppender.param.filename="/var/log/xp/remote.log"
     
     with ($sql= $this->logger->getCategory('sql')); {
       $appenders= $sql->getAppenders();
-      $this->assertInstanceOf('util.log.FileAppender', $appenders[0]);
+      $this->assertInstanceOf(FileAppender::class, $appenders[0]);
       $this->assertEquals('/var/log/xp/sql.log', $appenders[0]->filename);
     }
     
     with ($sql= $this->logger->getCategory('remote')); {
       $appenders= $sql->getAppenders();
-      $this->assertInstanceOf('util.log.FileAppender', $appenders[0]);
+      $this->assertInstanceOf(FileAppender::class, $appenders[0]);
       $this->assertEquals('/var/log/xp/remote.log', $appenders[0]->filename);
     }
   }
@@ -81,9 +86,9 @@ appender.util.log.SmtpAppender.param.email="xp@example.com"
     
     with ($sql= $this->logger->getCategory('sql')); {
       $appenders= $sql->getAppenders();
-      $this->assertInstanceOf('util.log.FileAppender', $appenders[0]);
+      $this->assertInstanceOf(FileAppender::class, $appenders[0]);
       $this->assertEquals('/var/log/xp/sql.log', $appenders[0]->filename);
-      $this->assertInstanceOf('util.log.SmtpAppender', $appenders[1]);
+      $this->assertInstanceOf(SmtpAppender::class, $appenders[1]);
       $this->assertEquals('xp@example.com', $appenders[1]->email);
     }
   }
@@ -100,10 +105,10 @@ appender.util.log.FileAppender.flags="LOGGER_FLAG_ERROR|LOGGER_FLAG_WARN"
     
     with ($cat= $this->logger->getCategory('sql')); {
       $this->assertFalse($cat === $this->logger->getCategory());
-      $this->assertInstanceOf('util.log.LogCategory', $cat);
+      $this->assertInstanceOf(LogCategory::class, $cat);
       $this->assertTrue($cat->hasAppenders());
       with ($appenders= $cat->getAppenders(\util\log\LogLevel::ERROR | \util\log\LogLevel::WARN)); {
-        $this->assertInstanceOf('util.log.FileAppender', $appenders[0]);
+        $this->assertInstanceOf(FileAppender::class, $appenders[0]);
       }
     }
   }
@@ -120,10 +125,10 @@ appender.util.log.FileAppender.levels="ERROR|WARN"
     
     with ($cat= $this->logger->getCategory('sql')); {
       $this->assertFalse($cat === $this->logger->getCategory());
-      $this->assertInstanceOf('util.log.LogCategory', $cat);
+      $this->assertInstanceOf(LogCategory::class, $cat);
       $this->assertTrue($cat->hasAppenders());
       with ($appenders= $cat->getAppenders(\util\log\LogLevel::ERROR | \util\log\LogLevel::WARN)); {
-        $this->assertInstanceOf('util.log.FileAppender', $appenders[0]);
+        $this->assertInstanceOf(FileAppender::class, $appenders[0]);
       }
     }
   }
@@ -140,7 +145,7 @@ appender.util.log.FileAppender.param.filename="/var/log/xp/default.log"
 
     with ($cat= $this->logger->getCategory('context')); {
       $this->assertTrue($cat->hasContext());
-      $this->assertInstanceOf('util.log.context.NestedLogContext', $cat->getContext());
+      $this->assertInstanceOf(NestedLogContext::class, $cat->getContext());
     }
   }
 
