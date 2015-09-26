@@ -1,5 +1,6 @@
 <?php namespace util\log\unittest;
  
+use util\log\layout\DefaultLayout;
 use util\log\LogCategory;
 use util\log\Logger;
 use util\log\Appender;
@@ -18,7 +19,7 @@ class LogCategoryTest extends \unittest\TestCase {
    * @return  util.log.Appender
    */
   private function mockAppender() {
-    $appender= newinstance('util.log.Appender', [], [
+    $appender= newinstance(Appender::class, [], [
       'messages' => [],
       'append' => function(LoggingEvent $event) {
         $this->messages[]= [
@@ -36,7 +37,7 @@ class LogCategoryTest extends \unittest\TestCase {
    * @return  util.log.Appender
    */
   private function emptyAppender() {
-    return newinstance('util.log.Appender', [], [
+    return newinstance(Appender::class, [], [
       'append' => function(LoggingEvent $event) { }
     ]);
   }
@@ -72,7 +73,7 @@ class LogCategoryTest extends \unittest\TestCase {
 
   #[@test]
   public function can_create_with_identifier_level_and_context() {
-    new LogCategory('identifier', LogLevel::ALL, newinstance('util.log.Context', [], [
+    new LogCategory('identifier', LogLevel::ALL, newinstance(Context::class, [], [
       'format' => function() { return ''; }
     ]));
   }
@@ -145,7 +146,7 @@ class LogCategoryTest extends \unittest\TestCase {
     $cat= new LogCategory();
     $appender= $this->emptyAppender();
     $cat->addAppender($appender);
-    $this->assertInstanceOf('util.log.layout.DefaultLayout', $appender->getLayout());
+    $this->assertInstanceOf(DefaultLayout::class, $appender->getLayout());
   }
 
   #[@test]
@@ -153,7 +154,7 @@ class LogCategoryTest extends \unittest\TestCase {
     $cat= new LogCategory();
     $appender= $this->emptyAppender();
     $cat->addAppender($appender->withLayout(new PatternLayout('%m')));
-    $this->assertInstanceOf('util.log.layout.PatternLayout', $appender->getLayout());
+    $this->assertInstanceOf(PatternLayout::class, $appender->getLayout());
   }
 
   #[@test]
@@ -161,7 +162,7 @@ class LogCategoryTest extends \unittest\TestCase {
     $cat= new LogCategory();
     $appender= $this->emptyAppender();
     $cat->withAppender($appender);
-    $this->assertInstanceOf('util.log.layout.DefaultLayout', $appender->getLayout());
+    $this->assertInstanceOf(DefaultLayout::class, $appender->getLayout());
   }
 
   #[@test]
@@ -169,7 +170,7 @@ class LogCategoryTest extends \unittest\TestCase {
     $cat= new LogCategory();
     $appender= $this->emptyAppender();
     $cat->withAppender($appender->withLayout(new PatternLayout('%m')));
-    $this->assertInstanceOf('util.log.layout.PatternLayout', $appender->getLayout());
+    $this->assertInstanceOf(PatternLayout::class, $appender->getLayout());
   }
 
   #[@test]
