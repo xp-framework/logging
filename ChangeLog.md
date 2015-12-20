@@ -3,6 +3,12 @@ Logging change log
 
 ## ?.?.? / ????-??-??
 
+## 6.5.1 / 2015-12-20
+
+* Declared dependency on xp-framework/collections and xp-framework/unittest,
+  which have since been extracted from XP core.
+  (@thekid)
+
 ## 6.5.0 / 2015-09-27
 
 * **Heads up: Bumped minimum PHP version required to PHP 5.5**. See PR #4
