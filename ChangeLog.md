@@ -3,6 +3,12 @@ Logging change log
 
 ## ?.?.? / ????-??-??
 
+## 6.6.0 / 2016-01-10
+
+* **Heads up: Upgrade your runners before using this release!**
+  It uses class path precedence as defined in xp-runners/reference#11
+  (@thekid)
+
 ## 6.5.1 / 2015-12-20
 
 * Declared dependency on xp-framework/collections and xp-framework/unittest,
