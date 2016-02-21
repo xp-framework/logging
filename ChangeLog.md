@@ -3,6 +3,10 @@ Logging change log
 
 ## ?.?.? / ????-??-??
 
+## 7.0.0 / 2016-02-21
+
+* Added version compatibility with XP 7 - @thekid
+
 ## 6.6.0 / 2016-01-10
 
 * **Heads up: Upgrade your runners before using this release!**
