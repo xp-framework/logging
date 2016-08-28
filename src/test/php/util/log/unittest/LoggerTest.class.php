@@ -7,6 +7,7 @@ use util\log\SmtpAppender;
 use util\log\context\NestedLogContext;
 use util\log\Logger;
 use util\Properties;
+use io\streams\MemoryInputStream;
 
 /**
  * Tests Logger class
@@ -32,7 +33,7 @@ class LoggerTest extends \unittest\TestCase {
    */
   private function configure($properties) {
     $p= new Properties(null);
-    $p->load(trim($properties));
+    $p->load(new MemoryInputStream(trim($properties)));
     $this->logger->configure($p);
   }
   
