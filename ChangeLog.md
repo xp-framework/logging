@@ -3,6 +3,12 @@ Logging change log
 
 ## ?.?.? / ????-??-??
 
+## 7.1.0 / 2016-08-28
+
+* Added forward compatibility with XP 8.0.0: Refrain from using deprecated
+  `util.Properties::fromString()`
+  (@thekid)
+
 ## 7.0.0 / 2016-02-21
 
 * **Adopted semantic versioning. See xp-framework/rfc#300** - @thekid 
