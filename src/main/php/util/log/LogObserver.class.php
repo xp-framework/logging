@@ -5,7 +5,7 @@
  *
  * @see   xp://util.Observable
  */
-class LogObserver extends \lang\Object implements BoundLogObserver {
+class LogObserver implements BoundLogObserver {
   public $cat= null;
   
   /**

@@ -5,7 +5,7 @@
  *
  * @see http://logging.apache.org/log4j/1.2/apidocs/org/apache/log4j/NDC.html
  */
-class NestedLogContext extends \lang\Object implements \util\log\Context {
+class NestedLogContext implements \util\log\Context {
   protected $queue= [];
 
   /**

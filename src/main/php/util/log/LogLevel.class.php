@@ -6,7 +6,7 @@
  * @see   xp://util.log.Logger
  * @test  xp://net.xp_framework.unittest.logging.LogLevelTest
  */
-abstract class LogLevel extends \lang\Object {
+abstract class LogLevel {
   const 
     INFO  = 0x0001,
     WARN  = 0x0002,

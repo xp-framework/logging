@@ -5,7 +5,7 @@
  *
  * @see http://logging.apache.org/log4j/1.2/apidocs/org/apache/log4j/MDC.html
  */
-class MappedLogContext extends \lang\Object implements \util\log\Context {
+class MappedLogContext implements \util\log\Context {
   protected $queue= [];
 
   /**
