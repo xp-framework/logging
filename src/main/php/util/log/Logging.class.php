@@ -44,7 +44,7 @@ abstract class Logging {
    *
    * @see    php://openlog
    * @param  int $facility
-   * @param  string $identifier if omitted, uses `$argv[0]`
+   * @param  string $identifier if omitted, uses main class
    * @return util.log.LogCategory
    */
   public static function toSyslog($facility= LOG_USER, $identifier= null) {
