@@ -72,6 +72,7 @@ use util\Configurable;
  * appender.util.log.FileAppender.param.filename="/var/log/xp/service_%Y-%m-%d.log"
  * </pre>
  *
+ * @deprecated Use util.log.Logging DSL and xp-framework/inject, e.g.
  * @test     xp://net.xp_framework.unittest.logging.LoggerTest
  */
 class Logger implements Configurable {
