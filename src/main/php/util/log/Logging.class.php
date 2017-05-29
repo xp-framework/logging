@@ -38,4 +38,16 @@ abstract class Logging {
   public static function toFile($file) {
     return self::to(new FileAppender($file));
   }
+
+  /**
+   * Returns a logging category with a syslog appender attached
+   *
+   * @see    php://openlog
+   * @param  int $facility
+   * @param  string $identifier if omitted, uses `$argv[0]`
+   * @return util.log.LogCategory
+   */
+  public static function toSyslog($facility= LOG_USER, $identifier= null) {
+    return self::to(new SyslogAppender($identifier ?: $_SERVER['argv'][0], $facility));
+  }
 }

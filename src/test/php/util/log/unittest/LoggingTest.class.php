@@ -5,6 +5,7 @@ use util\log\LogCategory;
 use util\log\FileAppender;
 use util\log\ConsoleAppender;
 use util\log\ColoredConsoleAppender;
+use util\log\SyslogAppender;
 use io\File;
 use io\Path;
 
@@ -33,5 +34,10 @@ class LoggingTest extends \unittest\TestCase {
   #])]
   public function to_file($file) {
     $this->assertInstanceOf(FileAppender::class, Logging::toFile($file)->getAppenders()[0]);
+  }
+
+  #[@test]
+  public function to_syslog() {
+    $this->assertInstanceOf(SyslogAppender::class, Logging::toSyslog()->getAppenders()[0]);
   }
 }
