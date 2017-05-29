@@ -1,5 +1,7 @@
 <?php namespace util\log;
 
+use io\File;
+
 /**
  * Appender which appends data to a file
  *
@@ -23,10 +25,14 @@ class FileAppender extends Appender {
   /**
    * Constructor
    *
-   * @param   string $filename default 'php://stderr' filename to log to
+   * @param  string|io.Path|io.File $file
    */
-  public function __construct($filename= 'php://stderr') {
-    $this->filename= $filename;
+  public function __construct($file= 'php://stderr') {
+    if ($file instanceof File) {
+      $this->filename= $file->getURI();
+    } else {
+      $this->filename= (string)$file;
+    }
   }
 
   /**

@@ -15,12 +15,11 @@ Example
 -------
 
 ```php
-use util\log\LogCategory;
-use util\log\ConsoleAppender;
+use util\log\Logging;
 use util\ServiceNotAvailableException;
 use lang\Throwable;
 
-$logger= (new LogCategory())->withAppender(new ConsoleAppender());
+$logger= Logging::named('service')->toConsole();
 $logger->info('Starting application');
 
 try {
