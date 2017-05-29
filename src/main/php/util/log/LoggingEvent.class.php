@@ -5,7 +5,7 @@
  *
  * @test    xp://net.xp_framework.unittest.logging.LoggingEventTest
  */
-class LoggingEvent extends \lang\Object {
+class LoggingEvent {
   protected $category= null;
   protected $timestamp= 0;
   protected $processId= 0;

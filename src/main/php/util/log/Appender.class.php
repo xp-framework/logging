@@ -1,12 +1,15 @@
 <?php namespace util\log;
 
+use lang\Value; 
+
 /**
  * Abstract base class for appenders
  *
  * @see   xp://util.log.LogCategory#addAppender
  */
-abstract class Appender extends \lang\Object {
+abstract class Appender implements Value {
   protected $layout= null;
+  private $__id= null;
 
   /**
    * Sets layout
@@ -51,12 +54,25 @@ abstract class Appender extends \lang\Object {
    */   
   public function finalize() { }
 
-  /**
-   * Creates a string representation of this object
-   *
-   * @return  string
-   */
+  /** @return string */
   public function toString() {
     return nameof($this).'(layout= '.\xp::stringOf($this->layout).')';
+  }
+
+  /** @return string */
+  public function hashCode() {
+    static $id= 0;
+
+    return $this->__id ?: $this->__id= sprintf('A%08x', ++$id);
+  }
+
+  /**
+   * Compares this appender to another value
+   *
+   * @param  var $value
+   * @return int
+   */
+  public function compareTo($value) {
+    return $value instanceof self ? strcmp($this->hashCode(), $value->hashCode()) : 1;
   }
 }

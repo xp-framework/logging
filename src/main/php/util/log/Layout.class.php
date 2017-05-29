@@ -3,7 +3,7 @@
 /**
  * Takes care of formatting log entries
  */
-abstract class Layout extends \lang\Object {
+abstract class Layout {
 
   /**
    * Creates a string representation of the given argument. For any 

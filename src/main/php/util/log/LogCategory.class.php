@@ -28,7 +28,7 @@ use util\log\layout\DefaultLayout;
  *
  * @test     xp://net.xp_framework.unittest.logging.LogCategoryTest
  */
-class LogCategory extends \lang\Object {
+class LogCategory {
   protected static $DEFAULT_LAYOUT= null;
   protected $_appenders= [];
   protected $context= null;

@@ -74,7 +74,7 @@ use util\Configurable;
  *
  * @test     xp://net.xp_framework.unittest.logging.LoggerTest
  */
-class Logger extends \lang\Object implements Configurable {
+class Logger implements Configurable {
   const DFLT= "default";
 
   protected static $instance= null;
