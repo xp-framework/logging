@@ -3,6 +3,7 @@
 use util\log\Logging;
 use util\log\LogCategory;
 use util\log\FileAppender;
+use util\log\ConsoleAppender;
 use util\log\ColoredConsoleAppender;
 use io\File;
 use io\Path;
@@ -18,6 +19,11 @@ class LoggingTest extends \unittest\TestCase {
   #[@test]
   public function to_console() {
     $this->assertInstanceOf(ColoredConsoleAppender::class, Logging::toConsole()->getAppenders()[0]);
+  }
+
+  #[@test]
+  public function to_console_without_colors() {
+    $this->assertInstanceOf(ConsoleAppender::class, Logging::toConsole(false)->getAppenders()[0]);
   }
 
   #[@test, @values([

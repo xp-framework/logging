@@ -22,10 +22,11 @@ abstract class Logging {
   /**
    * Returns a logging category with a console appender attached
    *
+   * @param  bool $colors
    * @return util.log.LogCategory
    */
-  public static function toConsole() {
-    return self::to(new ColoredConsoleAppender());
+  public static function toConsole($colors= true) {
+    return self::to($colors ? new ColoredConsoleAppender() : new ConsoleAppender());
   }
 
   /**
