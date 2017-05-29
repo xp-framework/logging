@@ -220,10 +220,9 @@ class LogCategory {
    *
    * Note: This also applies to warn(), error() and debug().
    *
-   * @param   var* args
+   * @param  var... $args
    */
-  public function info() {
-    $args= func_get_args();
+  public function info(... $args) {
     $this->log(LogLevel::INFO, $args);
   }
 
@@ -234,76 +233,68 @@ class LogCategory {
    *
    * Note: This also applies to warnf(), errorf() and debugf().
    *
-   * @see     php://sprintf
-   * @param   string format 
-   * @param   var* args
+   * @param  string $format 
+   * @param  var... $args
    */
-  public function infof() {
-    $args= func_get_args();
-    $this->log(LogLevel::INFO, [vsprintf($args[0], array_slice($args, 1))]);
+  public function infof($format, ... $args) {
+    $this->log(LogLevel::INFO, [vsprintf($format, $args)]);
   }
 
   /**
    * Appends a log of type warn
    *
-   * @param   var* args
+   * @param  var... $args
    */
-  public function warn() {
-    $args= func_get_args();
+  public function warn(... $args) {
     $this->log(LogLevel::WARN, $args);
   }
 
   /**
    * Appends a log of type info in printf-style
    *
-   * @param   string format 
-   * @param   var* args
+   * @param  string $format 
+   * @param  var... $args
    */
-  public function warnf() {
-    $args= func_get_args();
-    $this->log(LogLevel::WARN, [vsprintf($args[0], array_slice($args, 1))]);
+  public function warnf($format, ... $args) {
+    $this->log(LogLevel::WARN, [vsprintf($format, $args)]);
   }
 
   /**
    * Appends a log of type error
    *
-   * @param   var* args
+   * @param  var... $args
    */
-  public function error() {
-    $args= func_get_args();
+  public function error(... $args) {
     $this->log(LogLevel::ERROR, $args);
   }
 
   /**
    * Appends a log of type info in printf-style
    *
-   * @param   string format 
-   * @param   var* args
+   * @param  string $format 
+   * @param  var... $args
    */
-  public function errorf() {
-    $args= func_get_args();
-    $this->log(LogLevel::ERROR, [vsprintf($args[0], array_slice($args, 1))]);
+  public function errorf($format, ... $args) {
+    $this->log(LogLevel::ERROR, [vsprintf($format, $args)]);
   }
 
   /**
    * Appends a log of type debug
    *
-   * @param   var* args
+   * @param  var... $args
    */
-  public function debug() {
-    $args= func_get_args();
+  public function debug(... $args) {
     $this->log(LogLevel::DEBUG, $args);
   }
  
   /**
    * Appends a log of type info in printf-style
    *
-   * @param   string format format string
-   * @param   var* args
+   * @param  string $format format string
+   * @param  var... $args
    */
-  public function debugf() {
-    $args= func_get_args();
-    $this->log(LogLevel::DEBUG, [vsprintf($args[0], array_slice($args, 1))]);
+  public function debugf($format, ... $args) {
+    $this->log(LogLevel::DEBUG, [vsprintf($format, $args)]);
   }
  
   /**

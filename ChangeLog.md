@@ -5,6 +5,7 @@ s Logging change log
 
 ## 8.0.0 / 2017-05-29
 
+* Rewrote all named `LogCategory` methods to use native varargs - @thekid
 * **Heads up:** Dropped PHP 5.5 support - @thekid
 * Merged PR #5: XP9 Compat - @thekid
 
