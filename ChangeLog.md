@@ -8,6 +8,12 @@ s Logging change log
 * **Heads up:** Dropped PHP 5.5 support - @thekid
 * Merged PR #3: XP9 Compat - @thekid
 
+## 7.1.0 / 2016-08-28
+
+* Added forward compatibility with XP 8.0.0: Refrain from using deprecated
+  `util.Properties::fromString()`
+  (@thekid)
+
 ## 7.0.0 / 2016-02-21
 
 * **Adopted semantic versioning. See xp-framework/rfc#300** - @thekid 

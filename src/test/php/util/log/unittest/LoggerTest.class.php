@@ -14,32 +14,27 @@ use io\streams\MemoryInputStream;
  */
 class LoggerTest extends \unittest\TestCase {
   protected $logger= null;
-
-  /**
-   * Loads properties from a string
-   *
-   * @param  string $input
-   * @return util.Properties
-   */
-  private function properties($input) {
-    $p= new Properties();
-    $p->load(new MemoryInputStream(trim($input)));
-    return $p;
-  }
-
-  /**
-   * Setup method. Creates logger member for easier access to the
-   * Logger instance
-   */
+  
+  /** @return void */
   public function setUp() {
     $this->logger= Logger::getInstance();
   }
-  
-  /**
-   * Teardown method. Finalizes the logger.
-   */
+
+  /** @return void */
   public function tearDown() {
     $this->logger->finalize();
+  }
+
+  /**
+   * Configures logger
+   *
+   * @param  string $properties
+   * @return void
+   */
+  private function configure($properties) {
+    $p= new Properties(null);
+    $p->load(new MemoryInputStream(trim($properties)));
+    $this->logger->configure($p);
   }
   
   #[@test]
@@ -62,7 +57,7 @@ class LoggerTest extends \unittest\TestCase {
 
   #[@test]
   public function configureMultipleCategories() {
-    $this->logger->configure($this->properties('
+    $this->configure('
 [sql]
 appenders="util.log.FileAppender"
 appender.util.log.FileAppender.params="filename"
@@ -72,7 +67,7 @@ appender.util.log.FileAppender.param.filename="/var/log/xp/sql.log"
 appenders="util.log.FileAppender"
 appender.util.log.FileAppender.params="filename"
 appender.util.log.FileAppender.param.filename="/var/log/xp/remote.log"
-    '));
+    ');
     
     with ($sql= $this->logger->getCategory('sql')); {
       $appenders= $sql->getAppenders();
@@ -89,15 +84,15 @@ appender.util.log.FileAppender.param.filename="/var/log/xp/remote.log"
 
   #[@test]
   public function configureMultipleAppenders() {
-    $this->logger->configure($this->properties('
+    $this->configure('
 [sql]
 appenders="util.log.FileAppender|util.log.SmtpAppender"
 appender.util.log.FileAppender.params="filename"
 appender.util.log.FileAppender.param.filename="/var/log/xp/sql.log"
 appender.util.log.SmtpAppender.params="email"
 appender.util.log.SmtpAppender.param.email="xp@example.com"
-    '));
-    
+    ');
+
     with ($sql= $this->logger->getCategory('sql')); {
       $appenders= $sql->getAppenders();
       $this->assertInstanceOf(FileAppender::class, $appenders[0]);
@@ -109,14 +104,14 @@ appender.util.log.SmtpAppender.param.email="xp@example.com"
 
   #[@test]
   public function configureWithFlags() {
-    $this->logger->configure($this->properties('
+    $this->configure('
 [sql]
 appenders="util.log.FileAppender"
 appender.util.log.FileAppender.params="filename"
 appender.util.log.FileAppender.param.filename="/var/log/xp/sql-errors_%Y-%m-%d.log"
 appender.util.log.FileAppender.flags="LOGGER_FLAG_ERROR|LOGGER_FLAG_WARN"
-    '));
-    
+    ');
+
     with ($cat= $this->logger->getCategory('sql')); {
       $this->assertFalse($cat === $this->logger->getCategory());
       $this->assertInstanceOf(LogCategory::class, $cat);
@@ -129,14 +124,14 @@ appender.util.log.FileAppender.flags="LOGGER_FLAG_ERROR|LOGGER_FLAG_WARN"
 
   #[@test]
   public function configureWithLevels() {
-    $this->logger->configure($this->properties('
+    $this->configure('
 [sql]
 appenders="util.log.FileAppender"
 appender.util.log.FileAppender.params="filename"
 appender.util.log.FileAppender.param.filename="/var/log/xp/sql-errors_%Y-%m-%d.log"
 appender.util.log.FileAppender.levels="ERROR|WARN"
-    '));
-    
+    ');
+
     with ($cat= $this->logger->getCategory('sql')); {
       $this->assertFalse($cat === $this->logger->getCategory());
       $this->assertInstanceOf(LogCategory::class, $cat);
@@ -149,13 +144,13 @@ appender.util.log.FileAppender.levels="ERROR|WARN"
 
   #[@test]
   public function configureWithContext() {
-    $this->logger->configure($this->properties('
+    $this->configure('
 [context]
 appenders="util.log.FileAppender"
 context="util.log.context.NestedLogContext"
 appender.util.log.FileAppender.params="filename"
 appender.util.log.FileAppender.param.filename="/var/log/xp/default.log"
-    '));
+    ');
 
     with ($cat= $this->logger->getCategory('context')); {
       $this->assertTrue($cat->hasContext());
@@ -165,13 +160,13 @@ appender.util.log.FileAppender.param.filename="/var/log/xp/default.log"
 
   #[@test]
   public function configureWithLayout() {
-    $this->logger->configure($this->properties('
+    $this->configure('
 [fixture]
 appenders="util.log.FileAppender"
 appender.util.log.FileAppender.params="filename"
 appender.util.log.FileAppender.param.filename="/var/log/xp/default.log"
 appender.util.log.FileAppender.layout="util.log.layout.PatternLayout|%m"
-    '));
+    ');
 
     $this->assertInstanceOf(
       'util.log.layout.PatternLayout',
