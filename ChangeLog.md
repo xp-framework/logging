@@ -1,7 +1,12 @@
-Logging change log
+s Logging change log
 ==================
 
 ## ?.?.? / ????-??-??
+
+## 8.0.0 / 2017-05-29
+
+* **Heads up:** Dropped PHP 5.5 support - @thekid
+* Merged PR #3: XP9 Compat - @thekid
 
 ## 7.0.0 / 2016-02-21
 
