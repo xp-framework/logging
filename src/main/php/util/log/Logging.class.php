@@ -1,53 +1,48 @@
 <?php namespace util\log;
 
-use io\File;
-use io\Path;
-
+/**
+ * Logging DSL
+ *
+ * @test  xp://util.log.unittest.LoggingTest
+ */
 abstract class Logging {
 
   /**
-   * Returns a logging category with all specified appenders attached
+   * Returns a logging setup with all loglevels
    *
-   * @param  util.log.Appender... $appenders
-   * @return util.log.LogCategory
+   * @return util.log.LogSetup
    */
-  public static function to(...$appenders) {
-    $cat= new LogCategory();
-    foreach ($appenders as $appender) {
-      $cat->addAppender($appender);
-    }
-    return $cat;
+  public static function all() {
+    return new LogSetup();
   }
 
   /**
-   * Returns a logging category with a console appender attached
+   * Returns a logging setup with a given category
    *
-   * @param  bool $colors
-   * @return util.log.LogCategory
+   * @param  string $category
+   * @return util.log.LogSetup
    */
-  public static function toConsole($colors= true) {
-    return self::to($colors ? new ColoredConsoleAppender() : new ConsoleAppender());
+  public static function named($category) {
+    return (new LogSetup())->named($category);
   }
 
   /**
-   * Returns a logging category with a file appender attached
+   * Returns a logging setup with a given log level
    *
-   * @param  string|io.Path|io.File $file
-   * @return util.log.LogCategory
+   * @param  int $level
+   * @return util.log.LogSetup
    */
-  public static function toFile($file) {
-    return self::to(new FileAppender($file));
+  public static function of($level) {
+    return (new LogSetup())->of($level);
   }
 
   /**
-   * Returns a logging category with a syslog appender attached
+   * Returns a logging setup with a given layout
    *
-   * @see    php://openlog
-   * @param  int $facility
-   * @param  string $identifier if omitted, uses main class
-   * @return util.log.LogCategory
+   * @param  util.log.Layout $layout
+   * @return util.log.LogSetup
    */
-  public static function toSyslog($facility= LOG_USER, $identifier= null) {
-    return self::to(new SyslogAppender($identifier ?: $_SERVER['argv'][0], $facility));
+  public static function using(Layout $layout) {
+    return (new LogSetup())->using($layout);
   }
 }

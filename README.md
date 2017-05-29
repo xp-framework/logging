@@ -19,7 +19,7 @@ use util\log\Logging;
 use util\ServiceNotAvailableException;
 use lang\Throwable;
 
-$logger= Logging::toConsole();
+$logger= Logging::named('service')->toConsole();
 $logger->info('Starting application');
 
 try {
