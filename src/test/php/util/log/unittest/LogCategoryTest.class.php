@@ -379,4 +379,18 @@ class LogCategoryTest extends \unittest\TestCase {
     $cat->setContext($context);
     $this->assertEquals($context, $cat->getContext());
   }
+
+  #[@test]
+  public function as_string() {
+    $appender= $this->mockAppender();
+    $this->assertEquals(
+      "util.log.LogCategory(name=default flags=15)@{\n  15: [\n  - ".$appender->toString()."\n  ]\n}",
+      (new LogCategory())->withAppender($appender)->toString()
+    );
+  }
+
+  #[@test]
+  public function as_string_without_appenders() {
+    $this->assertEquals("util.log.LogCategory(name=default flags=15)@{\n}", (new LogCategory())->toString());
+  }
 }

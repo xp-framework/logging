@@ -1,6 +1,8 @@
 <?php namespace util\log;
 
 use util\log\layout\DefaultLayout;
+use lang\Value;
+use util\Objects;
 
 /**
  * The log category is the interface to be used. All logging information
@@ -28,11 +30,11 @@ use util\log\layout\DefaultLayout;
  *
  * @test     xp://net.xp_framework.unittest.logging.LogCategoryTest
  */
-class LogCategory {
+class LogCategory implements Value {
   protected static $DEFAULT_LAYOUT= null;
+
   protected $_appenders= [];
   protected $context= null;
-
   public $flags= 0;
   public $identifier= '';
     
@@ -304,46 +306,8 @@ class LogCategory {
   public function mark() {
     $this->log(LogLevel::INFO, [str_repeat('-', 72)]);
   }
-  
-  /**
-   * Helper method for equals
-   *
-   * @param   array c1
-   * @param   array c2
-   * @return  bool
-   */
-  protected static function appendersAreEqual($c1, $c2) {
-    if (sizeof($c1) != sizeof($c2)) return false;
-    foreach ($c1 as $f => $appenders) {
-      if (!isset($c2[$f])) return false;
-      if (sizeof($appenders) != sizeof($c2[$f])) return false;
-      foreach ($appenders as $hash => $appender) {
-        if (!isset($c2[$f][$hash])) return false;
-      }
-    }
-    return true;
-  }
 
-  /**
-   * Returns whether another object is equal to this
-   *
-   * @param   lang.Generic cmp
-   * @return  bool
-   */
-  public function equals($cmp) {
-    return (
-      $cmp instanceof self &&
-      $cmp->identifier === $this->identifier &&
-      $cmp->flags === $this->flags &&
-      self::appendersAreEqual($cmp->_appenders, $this->_appenders)
-    );
-  }
-
-  /**
-   * Creates a string representation of this object
-   *
-   * @return  string
-   */
+  /** @return string */
   public function toString() {
     $s= nameof($this).'(name='.$this->identifier.' flags='.$this->flags.")@{\n";
     foreach ($this->_appenders as $flags => $appenders) {
@@ -354,5 +318,26 @@ class LogCategory {
       $s.= "  ]\n";
     }
     return $s.'}';
+  }
+
+  /** @return string */
+  public function hashCode() {
+    return Objects::hashOf([$this->identifier, $this->flags, $this->context, $this->_appenders]);
+  }
+
+  /**
+   * Compares this appender to another value
+   *
+   * @param  var $value
+   * @return int
+   */
+  public function compareTo($value) {
+    return $value instanceof self
+      ? Objects::compare(
+          [$this->identifier, $this->flags, $this->context, $this->_appenders],
+          [$value->identifier, $value->flags, $value->context, $value->_appenders]
+        )
+      : 1
+    ;
   }
 }
