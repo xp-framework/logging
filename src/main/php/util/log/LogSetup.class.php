@@ -4,6 +4,11 @@ use util\log\layout\DefaultLayout;
 use lang\Value;
 use util\Objects;
 
+/**
+ * Logging DSL
+ *
+ * @test  xp://util.log.unittest.LoggingTest
+ */
 class LogSetup implements Value {
   private $category= null;
   private $level= LogLevel::ALL;
