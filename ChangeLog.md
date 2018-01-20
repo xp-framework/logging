@@ -5,6 +5,7 @@ s Logging change log
 
 ## 8.0.1 / 2018-01-20
 
+* Fixed inconsistency between PHP 5 and 7 with map formatting - @thekid
 * Fixed test suite not entirely running on XP9 - @thekid
 
 ## 8.0.0 / 2017-05-29
