@@ -78,9 +78,17 @@ class LayoutTest extends TestCase {
   }
 
   #[@test]
+  public function formatting_function() {
+    $this->assertEquals(
+      '[log] Test',
+      $this->fixture->format($this->newEvent(LogLevel::DEBUG, [function() { return 'Test'; }]))
+    );
+  }
+
+  #[@test]
   public function formatting_value() {
     $this->assertEquals(
-      "[log] Test",
+      '[log] Test',
       $this->fixture->format($this->newEvent(LogLevel::DEBUG, [newinstance(Value::class, [], [
         'compareTo' => function($value) { return 1; },
         'hashCode'  => function() { return 'test'; },

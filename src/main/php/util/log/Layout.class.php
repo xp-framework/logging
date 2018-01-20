@@ -44,6 +44,8 @@ abstract class Layout {
         }
         return $r."\n]";
       }
+    } else if ($arg instanceof \Closure) {
+      return $arg();
     } else {
       return (string)$arg;
     }

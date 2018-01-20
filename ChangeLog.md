@@ -3,8 +3,11 @@ s Logging change log
 
 ## ?.?.? / ????-??-??
 
-## 8.0.1 / 2018-01-20
+## 8.1.0 / 2018-01-20
 
+* Added ability to use functions inside `debug()`, `info()`, `warn()` and
+  `error()` which will be invoked at the moment of formatting
+  (@thekid)
 * Fixed inconsistency between PHP 5 and 7 with map formatting - @thekid
 * Fixed test suite not entirely running on XP9 - @thekid
 
