@@ -3,6 +3,10 @@ s Logging change log
 
 ## ?.?.? / ????-??-??
 
+## 8.0.1 / 2018-01-20
+
+* Fixed test suite not entirely running on XP9 - @thekid
+
 ## 8.0.0 / 2017-05-29
 
 * Merged PR #6: Logging DSL - @thekid
