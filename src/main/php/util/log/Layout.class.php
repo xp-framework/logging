@@ -6,7 +6,7 @@ use lang\Value;
 /**
  * Takes care of formatting log entries
  *
- * @test  xp://util.log.unittest.DefaultLayoutTest
+ * @test  xp://util.log.unittest.LayoutTest
  */
 abstract class Layout {
 
