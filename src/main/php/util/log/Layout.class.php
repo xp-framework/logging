@@ -1,5 +1,7 @@
 <?php namespace util\log;
 
+use util\Objects;
+
 /**
  * Takes care of formatting log entries
  */
@@ -14,7 +16,7 @@ abstract class Layout {
    * @return  string
    */
   protected function stringOf($arg) {
-    return is_string($arg) ? $arg : \xp::stringOf($arg);
+    return is_string($arg) ? $arg : Objects::stringOf($arg);
   }
 
   /**
