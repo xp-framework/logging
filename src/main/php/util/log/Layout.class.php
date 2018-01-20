@@ -46,6 +46,13 @@ abstract class Layout {
       }
     } else if ($arg instanceof \Closure) {
       return $arg();
+    } else if (is_object($arg)) {
+      $indent.= '  ';
+      $r= nameof($arg).'@{';
+      foreach ((array)$arg as $key => $value) {
+        $r.= "\n".$indent.$key.' => '.$this->stringOf($value, $indent);
+      }
+      return $r."\n}";
     } else {
       return (string)$arg;
     }

@@ -78,6 +78,14 @@ class LayoutTest extends TestCase {
   }
 
   #[@test]
+  public function formatting_object() {
+    $this->assertEquals(
+      "[log] stdClass@{\n  key => \"value\"\n}",
+      $this->fixture->format($this->newEvent(LogLevel::DEBUG, [(object)['key' => 'value']]))
+    );
+  }
+
+  #[@test]
   public function formatting_function() {
     $this->assertEquals(
       '[log] Test',
