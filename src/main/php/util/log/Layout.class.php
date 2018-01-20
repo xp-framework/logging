@@ -1,22 +1,52 @@
 <?php namespace util\log;
 
-use util\Objects;
+use lang\Generic;
+use lang\Value;
 
 /**
  * Takes care of formatting log entries
+ *
+ * @test  xp://util.log.unittest.DefaultLayoutTest
  */
 abstract class Layout {
 
   /**
-   * Creates a string representation of the given argument. For any 
-   * string given, the result is the string itself, for any other type,
-   * the result is the xp::stringOf() output.
+   * Creates a string representation of the given argument.
    *
-   * @param   var arg
-   * @return  string
+   * @param  var $arg
+   * @return string
    */
-  protected function stringOf($arg) {
-    return is_string($arg) ? $arg : Objects::stringOf($arg);
+  protected function stringOf($arg, $indent= '') {
+    if (null === $arg) {
+      return 'null';
+    } else if (false === $arg) {
+      return 'false';
+    } else if (true === $arg) {
+      return 'true';
+    } else if (is_string($arg)) {
+      return '' === $indent ? $arg : '"'.$arg.'"';
+    } else if ($arg instanceof Value || $arg instanceof Generic) {
+      return $arg->toString();
+    } else if ([] === $arg) {
+      return '[]';
+    } else if (is_array($arg)) {
+      $indent.= '  ';
+      if (0 === key($arg)) {
+        $r= '';
+        foreach ($arg as $value) {
+          $r.= ', '.$this->stringOf($value, $indent);
+        }
+        return '['.substr($r, 2).']';
+      } else {
+        $r= '[';
+        foreach ($arg as $key => $value) {
+          $r.= "\n".$indent.$key.' => '.$this->stringOf($value, $indent);
+        }
+        return $r."\n]";
+      }
+    } else {
+      return (string)$arg;
+    }
   }
 
   /**
