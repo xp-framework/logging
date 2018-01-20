@@ -5,6 +5,7 @@ use util\log\layout\DefaultLayout;
 use util\log\LoggingEvent;
 use util\log\LogCategory;
 use util\log\LogLevel;
+use lang\Value;
 
 class DefaultLayoutTest extends \unittest\TestCase {
   private $fixture, $tz;
@@ -31,7 +32,6 @@ class DefaultLayoutTest extends \unittest\TestCase {
   public function newEvent($level, $args) {
     return new LoggingEvent(new LogCategory('test'), 0, 0, $level, $args);
   }
-
 
   #[@test]
   public function debug() {
@@ -62,6 +62,54 @@ class DefaultLayoutTest extends \unittest\TestCase {
     $this->assertEquals(
       "[01:00:00     0 error] Test\n",
       $this->fixture->format($this->newEvent(LogLevel::ERROR, ['Test']))
+    );
+  }
+
+  #[@test, @values([
+  #  [null, 'null'],
+  #  [true, 'true'],
+  #  [false, 'false'],
+  #  [1, '1'],
+  #  [1.5, '1.5'],
+  #  ['Test', 'Test'],
+  #])]
+  public function formatting_scalars($value, $expected) {
+    $this->assertEquals(
+      "[01:00:00     0 debug] ".$expected."\n",
+      $this->fixture->format($this->newEvent(LogLevel::DEBUG, [$value]))
+    );
+  }
+
+  #[@test, @values([
+  #  [[], '[]'],
+  #  [[1], '[1]'],
+  #  [[1, 2, 3], '[1, 2, 3]'],
+  #  [[[1]], '[[1]]'],
+  #])]
+  public function formatting_arrays($value, $expected) {
+    $this->assertEquals(
+      "[01:00:00     0 debug] ".$expected."\n",
+      $this->fixture->format($this->newEvent(LogLevel::DEBUG, [$value]))
+    );
+  }
+
+  #[@test]
+  public function formatting_map() {
+    $this->assertEquals(
+      "[01:00:00     0 debug] [\n  key => \"value\"\n]\n",
+      $this->fixture->format($this->newEvent(LogLevel::DEBUG, [['key' => 'value']]))
+    );
+  }
+
+  #[@test]
+  public function formatting_value() {
+    $this->assertEquals(
+      "[01:00:00     0 debug] Test\n",
+      $this->fixture->format($this->newEvent(LogLevel::DEBUG, [newinstance(Value::class, [], [
+        'compareTo' => function($value) { return 1; },
+        'hashCode'  => function() { return 'test'; },
+        'toString'  => function() { return 'Test'; },
+      ])]))
     );
   }
 }
