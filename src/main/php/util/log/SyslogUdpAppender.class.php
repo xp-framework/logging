@@ -17,19 +17,19 @@ class SyslogUdpAppender extends Appender {
   const DATAGRAM_MAX_LENGTH = 65023;
 
   /** @var int int */
-  private $facility;
+  public $facility;
 
   /** @var resource */
   private $socket= null;
 
   /** @var string */
-  private $identifier;
+  public $identifier;
 
   /** @var string */
-  private $ip;
+  public $ip;
 
   /** @var int */
-  private $port;
+  public $port;
 
   /**
    * SyslogUdpAppender constructor.
@@ -39,7 +39,7 @@ class SyslogUdpAppender extends Appender {
    * @param string|null $identifier default null (current filename)
    * @param int $facility default LOG_USER
    */
-  public function __construct($ip, $port= 514, $identifier= null, $facility= LOG_USER) {
+  public function __construct($ip='127.0.0.1', $port= 514, $identifier= null, $facility= LOG_USER) {
     $this->ip= $ip;
     $this->port= $port;
     $this->facility= $facility;

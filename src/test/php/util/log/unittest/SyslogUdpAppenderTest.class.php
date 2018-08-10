@@ -1,10 +1,13 @@
 <?php namespace util\log\unittest;
 
+use io\streams\MemoryInputStream;
 use unittest\TestCase;
 use util\log\layout\PatternLayout;
+use util\log\Logger;
 use util\log\LoggingEvent;
 use util\log\LogLevel;
 use util\log\SyslogUdpAppender;
+use util\Properties;
 
 class SyslogUdpAppenderTest extends TestCase {
 
@@ -40,6 +43,27 @@ class SyslogUdpAppenderTest extends TestCase {
       '
     );
     return $appender->withLayout(new PatternLayout('%m'));
+  }
+
+  #[@test]
+  public function test_instanceFromConfig() {
+    $properties= new Properties('log');
+    $properties->load(new MemoryInputStream('
+[default]
+appenders="util.log.SyslogUdpAppender"
+appender.util.log.SyslogUdpAppender.params="ip|port|identifier|facility"
+appender.util.log.SyslogUdpAppender.param.ip="123.456.789.876"
+appender.util.log.SyslogUdpAppender.param.port="123"
+appender.util.log.SyslogUdpAppender.param.identifier="test_identifier"
+appender.util.log.SyslogUdpAppender.param.facility="123"
+    '));
+    $logger= Logger::getInstance();
+    $logger->configure($properties);
+    $appender= $logger->getCategory()->getAppenders()[0];
+    $this->assertEquals('123.456.789.876', $appender->ip);
+    $this->assertEquals('123', $appender->port);
+    $this->assertEquals('test_identifier', $appender->identifier);
+    $this->assertEquals('123', $appender->facility);
   }
 
   #[@test]
