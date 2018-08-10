@@ -8,8 +8,10 @@ use lang\Value;
  * @see   xp://util.log.LogCategory#addAppender
  */
 abstract class Appender implements Value {
-  protected $layout= null;
+  private static $id= 0;
   private $__id= null;
+
+  protected $layout= null;
 
   /**
    * Sets layout
@@ -61,9 +63,7 @@ abstract class Appender implements Value {
 
   /** @return string */
   public function hashCode() {
-    static $id= 0;
-
-    return $this->__id ?: $this->__id= sprintf('A%08x', ++$id);
+    return $this->__id ?: $this->__id= sprintf('A%08x', ++self::$id);
   }
 
   /**
