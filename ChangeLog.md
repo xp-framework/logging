@@ -3,7 +3,7 @@ s Logging change log
 
 ## ?.?.? / ????-??-??
 
-## 8.1.! / 2018-08-10
+## 8.1.1 / 2018-08-10
 
 * Fix issue #8: Hashcode should be unique - @thekid
 
