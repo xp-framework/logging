@@ -18,7 +18,7 @@ class SyslogUdpAppenderTest extends TestCase {
    * @param  ?string $mockDate
    * @return util.log.SyslogUdpAppender
    */
-  protected function newFixture($identifier= null, $mockDate= null) {
+  private function newFixture($identifier= null, $mockDate= null) {
     $appender= newinstance(SyslogUdpAppender::class, ['127.0.0.1', 514, $identifier, LOG_USER], [
       'lastBuffer'     => '',
       'sendUdpPackage' => function($buffer) { $this->lastBuffer= $buffer; },
@@ -27,33 +27,29 @@ class SyslogUdpAppenderTest extends TestCase {
     return $appender->withLayout(new PatternLayout('%m'));
   }
 
+  /** @return iterable */
+  private function levels() {
+    yield LogLevel::DEBUG => LOG_USER + LOG_DEBUG;
+    yield LogLevel::INFO  => LOG_USER + LOG_INFO;
+    yield LogLevel::WARN  => LOG_USER + LOG_WARNING;
+    yield LogLevel::ERROR => LOG_USER + LOG_ERR;
+  }
+
   #[@test]
-  public function test_sentData() {
+  public function identifier_defaults_to_php_self() {
+    $fixture= new SyslogUdpAppender('127.0.0.1', 514, null, LOG_USER);
+    $this->assertEquals(basename($_SERVER['PHP_SELF']), $fixture->identifier);
+  }
+
+  #[@test, @values(map= 'levels')]
+  public function formatting($level, $priority) {
     $testMessage= 'BOM\'su root\' failed for lonvick on /dev/pts/8';
 
-    // Identifier set
-    $appender= $this->newFixture(
-      'su',
-      '2003-10-11T22:14:15.003Z'
-    );
-    $appender->append((new LoggingEvent(
-      'testCat', time(), 1234, LogLevel::ERROR, [$testMessage]
-    )));
-    $this->assertEquals(
-      '<'.(LOG_USER + LOG_ERR).'>1 2003-10-11T22:14:15.003Z '.gethostname().' su '.getmypid().' - - '.$testMessage,
-      $appender->lastBuffer
-    );
+    $appender= $this->newFixture('su', '2003-10-11T22:14:15.003Z');
+    $appender->append(new LoggingEvent('testCat', time(), 1234, LogLevel::ERROR, [$testMessage]));
 
-    // Identifier generated from filename
-    $appender= $this->newFixture(
-      null,
-      '2003-10-11T22:14:15.003Z'
-    );
-    $appender->append((new LoggingEvent(
-      'testCat', time(), 1234, LogLevel::ERROR, ['BOM\'su root\' failed for lonvick on /dev/pts/8']
-    )));
     $this->assertEquals(
-      '<'.(LOG_USER + LOG_ERR).'>1 2003-10-11T22:14:15.003Z '.gethostname().' '. basename($_SERVER['PHP_SELF']).' '.getmypid().' - - '.$testMessage,
+      '<'.$priority.'>1 2003-10-11T22:14:15.003Z '.gethostname().' su '.getmypid().' - - '.$testMessage,
       $appender->lastBuffer
     );
   }
@@ -66,5 +62,4 @@ class SyslogUdpAppenderTest extends TestCase {
     )));
     $this->assertEquals(SyslogUdpAppender::DATAGRAM_MAX_LENGTH, strlen($appender->lastBuffer));
   }
-
 }
