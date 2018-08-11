@@ -1,22 +1,14 @@
 <?php namespace util\log;
 
-use io\IOException;
-use util\Date;
-
 /**
  * Appender which appends data to syslog via UDP
  *
  * @see rfc5424
- *
  */
 class SyslogUdpAppender extends Appender {
-
-  /**
-   * Value is from monologs UdpSocket
-   */
   const DATAGRAM_MAX_LENGTH = 65023;
 
-  /** @var int int */
+  /** @var int */
   public $facility;
 
   /** @var resource */
@@ -36,38 +28,34 @@ class SyslogUdpAppender extends Appender {
    *
    * @param string $ip
    * @param int $port default 514
-   * @param string|null $identifier default null (current filename)
+   * @param ?string $identifier default null (current filename)
    * @param int $facility default LOG_USER
    */
-  public function __construct($ip='127.0.0.1', $port= 514, $identifier= null, $facility= LOG_USER) {
+  public function __construct($ip= '127.0.0.1', $port= 514, $identifier= null, $facility= LOG_USER) {
     $this->ip= $ip;
     $this->port= $port;
-    $this->facility= $facility;
     $this->identifier= $identifier ?: basename($_SERVER['PHP_SELF']);
+    $this->facility= $facility;
   }
 
   /**
    * Append data
    *
-   * @param LoggingEvent $event
+   * @param  util.log.LoggingEvent $event
+   * @return void
    */
   public function append(LoggingEvent $event) {
-    $header= $this->buildHeader($event);
-    $this->sendUdpPackage($header.substr(
-      $this->layout->format($event),
-      0,
-      self::DATAGRAM_MAX_LENGTH - strlen($header)
-    ));
+    $header= $this->header($event);
+    $this->send($header.substr($this->layout->format($event), 0, self::DATAGRAM_MAX_LENGTH - strlen($header)));
   }
 
   /**
    * Builds syslog package header
    *
-   * @see rfc5424
-   * @param LoggingEvent $event
+   * @param  util.log.LoggingEvent $event
    * @return string
    */
-  private function buildHeader(LoggingEvent $event) {
+  private function header($event) {
     static $map= [
       LogLevel::INFO    => LOG_INFO,
       LogLevel::WARN    => LOG_WARNING,
@@ -77,30 +65,24 @@ class SyslogUdpAppender extends Appender {
     ];
 
     $l= $event->getLevel();
-    $priority = $this->facility + ($map[isset($map[$l]) ? $l : LogLevel::NONE]);
-
-    if (!$hostname= getHostName()) {
-      $hostname= '-';
-    }
-
-    if (!$pid= getmypid()) {
-      $pid = '-';
-    }
-
-    return
-      '<'.$priority.'>1 '.
-      $this->getCurrentDate().' '.
-      $hostname.' '.
-      $this->identifier.' '.
-      $pid.' - - ';
+    $priority= $this->facility + ($map[isset($map[$l]) ? $l : LogLevel::NONE]);
+    return sprintf(
+      '<%d>1 %s %s %s %s - - ',
+      $priority,
+      $this->currentDate(),
+      (gethostname() ?: '-'),
+      $this->identifier,
+      (getmypid() ?: '-')
+    );
   }
 
   /**
    * Sends buffer via udp to syslog
    *
-   * @param $buffer
+   * @param  string $buffer
+   * @return void
    */
-  protected function sendUdpPackage($buffer) {
+  protected function send($buffer) {
     if ($this->socket === null) {
       $this->socket= socket_create(AF_INET, SOCK_DGRAM, SOL_UDP);
     }
@@ -112,14 +94,14 @@ class SyslogUdpAppender extends Appender {
    *
    * @return string
    */
-  protected function getCurrentDate() {
+  protected function currentDate() {
     return date(\DateTime::RFC3339);
   }
 
   /**
-   * Finalize this appender.
-   * This method is called when the logger is shut down
+   * Finalize this appender. This method is called when the logger is shut down
    *
+   * @return void
    */
   public function finalize() {
     if (is_resource($this->socket)) {
@@ -134,5 +116,4 @@ class SyslogUdpAppender extends Appender {
   public function __destruct() {
     $this->finalize();
   }
-
 }

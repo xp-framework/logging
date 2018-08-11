@@ -14,15 +14,15 @@ class SyslogUdpAppenderTest extends TestCase {
   /**
    * Creates new Syslog UDP appender fixture
    *
-   * @param  ?string $identifier
-   * @param  ?string $mockDate
+   * @param  string $identifier
+   * @param  string $mockDate
    * @return util.log.SyslogUdpAppender
    */
-  private function newFixture($identifier= null, $mockDate= null) {
+  private function newFixture($identifier, $mockDate) {
     $appender= newinstance(SyslogUdpAppender::class, ['127.0.0.1', 514, $identifier, LOG_USER], [
-      'lastBuffer'     => '',
-      'sendUdpPackage' => function($buffer) { $this->lastBuffer= $buffer; },
-      'getCurrentDate' => function() use($mockDate) { return $mockDate; },
+      'lastBuffer'  => '',
+      'send'        => function($buffer) { $this->lastBuffer= $buffer; },
+      'currentDate' => function() use($mockDate) { return $mockDate; },
     ]);
     return $appender->withLayout(new PatternLayout('%m'));
   }
@@ -43,23 +43,24 @@ class SyslogUdpAppenderTest extends TestCase {
 
   #[@test, @values(map= 'levels')]
   public function formatting($level, $priority) {
-    $testMessage= 'BOM\'su root\' failed for lonvick on /dev/pts/8';
+    $message= 'BOM\'su root\' failed for lonvick on /dev/pts/8';
 
     $appender= $this->newFixture('su', '2003-10-11T22:14:15.003Z');
-    $appender->append(new LoggingEvent('testCat', time(), 1234, LogLevel::ERROR, [$testMessage]));
+    $appender->append(new LoggingEvent('testCat', time(), 1234, LogLevel::ERROR, [$message]));
 
     $this->assertEquals(
-      '<'.$priority.'>1 2003-10-11T22:14:15.003Z '.gethostname().' su '.getmypid().' - - '.$testMessage,
+      '<'.$priority.'>1 2003-10-11T22:14:15.003Z '.gethostname().' su '.getmypid().' - - '.$message,
       $appender->lastBuffer
     );
   }
 
   #[@test]
-  public function test_sendedData_maxLangth() {
-    $appender= $this->newFixture();
-    $appender->append((new LoggingEvent(
-      'testCat', time(), 1234, LogLevel::ERROR, [str_pad('', 70000, '0')]
-    )));
+  public function message_is_cut_when_maximum_length_is_reached() {
+    $message= str_repeat('*', SyslogUdpAppender::DATAGRAM_MAX_LENGTH + 1);
+
+    $appender= $this->newFixture('su', '2003-10-11T22:14:15.003Z');
+    $appender->append(new LoggingEvent('testCat', time(), 1234, LogLevel::ERROR, [$message]));
+
     $this->assertEquals(SyslogUdpAppender::DATAGRAM_MAX_LENGTH, strlen($appender->lastBuffer));
   }
 }
