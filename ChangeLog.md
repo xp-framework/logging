@@ -3,6 +3,11 @@ s Logging change log
 
 ## ?.?.? / ????-??-??
 
+## 8.2.0 / 2018-08-11
+
+* Made Logger::configure() return the logger itself - @thekid
+* Merged PR #7: Add Syslog UDP appender - @johannes85, @thekid
+
 ## 8.1.1 / 2018-08-10
 
 * Fix issue #8: Hashcode should be unique - @thekid
