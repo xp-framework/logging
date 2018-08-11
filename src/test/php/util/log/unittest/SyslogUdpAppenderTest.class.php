@@ -14,34 +14,16 @@ class SyslogUdpAppenderTest extends TestCase {
   /**
    * Creates new Syslog UDP appender fixture
    *
-   * @param string $ip
-   * @param int $port
-   * @param null $identifier
-   * @param int $facility
-   * @return SyslogUdpAppender
-   * @throws \lang\IllegalArgumentException
+   * @param  ?string $identifier
+   * @param  ?string $mockDate
+   * @return util.log.SyslogUdpAppender
    */
-  protected function newFixture(
-    $identifier= null,
-    $mockDate= null
-  ) {
-    $appender= newinstance(SyslogUdpAppender::class,
-      ['127.0.0.1', 514, $identifier, LOG_USER],
-      '
-        {
-          public $lastBuffer;
-        
-          public function sendUdpPackage($buffer) {
-            $this->lastBuffer= $buffer;
-          }
-          
-          '.($mockDate ? 'protected function getCurrentDate() {
-            return \''.$mockDate.'\';
-          }' : '') .'
-          
-        }
-      '
-    );
+  protected function newFixture($identifier= null, $mockDate= null) {
+    $appender= newinstance(SyslogUdpAppender::class, ['127.0.0.1', 514, $identifier, LOG_USER], [
+      'lastBuffer'     => '',
+      'sendUdpPackage' => function($buffer) { $this->lastBuffer= $buffer; },
+      'getCurrentDate' => function() use($mockDate) { return $mockDate; },
+    ]);
     return $appender->withLayout(new PatternLayout('%m'));
   }
 
