@@ -1,10 +1,7 @@
 <?php namespace util\log\unittest;
 
-use io\streams\MemoryInputStream;
 use unittest\TestCase;
-use util\Properties;
 use util\log\LogLevel;
-use util\log\Logger;
 use util\log\LoggingEvent;
 use util\log\SyslogUdpAppender;
 use util\log\layout\PatternLayout;
