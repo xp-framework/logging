@@ -117,7 +117,8 @@ class Logger implements Configurable {
   /**
    * Configure this logger
    *
-   * @param   util.Properties prop instance of a Properties object
+   * @param  util.Properties $prop instance of a Properties object
+   * @return self
    */
   public function configure($prop) {
     
@@ -191,6 +192,8 @@ class Logger implements Configurable {
         }
       }
     } while ($section= $prop->getNextSection());
+
+    return $this;
   }
   
   /**

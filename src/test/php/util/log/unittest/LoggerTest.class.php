@@ -1,13 +1,13 @@
 <?php namespace util\log\unittest;
  
-use util\log\LogCategory;
+use io\streams\MemoryInputStream;
 use util\Configurable;
+use util\Properties;
 use util\log\FileAppender;
+use util\log\LogCategory;
+use util\log\Logger;
 use util\log\SmtpAppender;
 use util\log\context\NestedLogContext;
-use util\log\Logger;
-use util\Properties;
-use io\streams\MemoryInputStream;
 
 /**
  * Tests Logger class
@@ -29,12 +29,12 @@ class LoggerTest extends \unittest\TestCase {
    * Configures logger
    *
    * @param  string $properties
-   * @return void
+   * @return util.log.Logger
    */
   private function configure($properties) {
     $p= new Properties(null);
     $p->load(new MemoryInputStream(trim($properties)));
-    $this->logger->configure($p);
+    return $this->logger->configure($p);
   }
   
   #[@test]
@@ -53,6 +53,11 @@ class LoggerTest extends \unittest\TestCase {
   #[@test]
   public function isConfigurable() {
     $this->assertInstanceOf(Configurable::class, $this->logger);
+  }
+
+  #[@test]
+  public function configure_returns_logger() {
+    $this->assertTrue($this->logger === $this->configure(''));
   }
 
   #[@test]
