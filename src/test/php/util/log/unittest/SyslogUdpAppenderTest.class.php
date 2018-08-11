@@ -2,12 +2,12 @@
 
 use io\streams\MemoryInputStream;
 use unittest\TestCase;
-use util\log\layout\PatternLayout;
+use util\Properties;
+use util\log\LogLevel;
 use util\log\Logger;
 use util\log\LoggingEvent;
-use util\log\LogLevel;
 use util\log\SyslogUdpAppender;
-use util\Properties;
+use util\log\layout\PatternLayout;
 
 class SyslogUdpAppenderTest extends TestCase {
 
@@ -67,7 +67,7 @@ appender.util.log.SyslogUdpAppender.param.facility="123"
   }
 
   #[@test]
-  public function test_sendedData() {
+  public function test_sentData() {
     $testMessage= 'BOM\'su root\' failed for lonvick on /dev/pts/8';
 
     // Identifier set
@@ -79,7 +79,7 @@ appender.util.log.SyslogUdpAppender.param.facility="123"
       'testCat', time(), 1234, LogLevel::ERROR, [$testMessage]
     )));
     $this->assertEquals(
-      '<11>1 2003-10-11T22:14:15.003Z '.gethostname().' su '.getmypid().' - - '.$testMessage,
+      '<'.(LOG_USER + LOG_ERR).'>1 2003-10-11T22:14:15.003Z '.gethostname().' su '.getmypid().' - - '.$testMessage,
       $appender->lastBuffer
     );
 
@@ -92,7 +92,7 @@ appender.util.log.SyslogUdpAppender.param.facility="123"
       'testCat', time(), 1234, LogLevel::ERROR, ['BOM\'su root\' failed for lonvick on /dev/pts/8']
     )));
     $this->assertEquals(
-      '<11>1 2003-10-11T22:14:15.003Z '.gethostname().' '. basename($_SERVER['PHP_SELF']).' '.getmypid().' - - '.$testMessage,
+      '<'.(LOG_USER + LOG_ERR).'>1 2003-10-11T22:14:15.003Z '.gethostname().' '. basename($_SERVER['PHP_SELF']).' '.getmypid().' - - '.$testMessage,
       $appender->lastBuffer
     );
   }
