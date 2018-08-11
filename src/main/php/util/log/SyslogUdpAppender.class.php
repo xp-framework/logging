@@ -57,15 +57,14 @@ class SyslogUdpAppender extends Appender {
    */
   private function header($event) {
     static $map= [
-      LogLevel::INFO    => LOG_INFO,
-      LogLevel::WARN    => LOG_WARNING,
-      LogLevel::ERROR   => LOG_ERR,
-      LogLevel::DEBUG   => LOG_DEBUG,
-      LogLevel::NONE    => LOG_NOTICE
+      LogLevel::INFO  => LOG_INFO,
+      LogLevel::WARN  => LOG_WARNING,
+      LogLevel::ERROR => LOG_ERR,
+      LogLevel::DEBUG => LOG_DEBUG,
     ];
 
     $l= $event->getLevel();
-    $priority= $this->facility + ($map[isset($map[$l]) ? $l : LogLevel::NONE]);
+    $priority= $this->facility + (isset($map[$l]) ? $map[$l] : LOG_NOTICE);
     return sprintf(
       '<%d>1 %s %s %s %s - - ',
       $priority,

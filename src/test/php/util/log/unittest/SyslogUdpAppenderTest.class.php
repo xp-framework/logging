@@ -26,10 +26,11 @@ class SyslogUdpAppenderTest extends TestCase {
 
   /** @return iterable */
   private function levels() {
-    yield LogLevel::DEBUG => LOG_USER + LOG_DEBUG;
-    yield LogLevel::INFO  => LOG_USER + LOG_INFO;
-    yield LogLevel::WARN  => LOG_USER + LOG_WARNING;
-    yield LogLevel::ERROR => LOG_USER + LOG_ERR;
+    yield [LogLevel::DEBUG, LOG_USER + LOG_DEBUG];
+    yield [LogLevel::INFO,  LOG_USER + LOG_INFO];
+    yield [LogLevel::WARN,  LOG_USER + LOG_WARNING];
+    yield [LogLevel::ERROR, LOG_USER + LOG_ERR];
+    yield [LogLevel::NONE,  LOG_USER + LOG_NOTICE];
   }
 
   #[@test]
@@ -38,12 +39,12 @@ class SyslogUdpAppenderTest extends TestCase {
     $this->assertEquals(basename($_SERVER['PHP_SELF']), $fixture->identifier);
   }
 
-  #[@test, @values(map= 'levels')]
+  #[@test, @values('levels')]
   public function formatting($level, $priority) {
     $message= 'BOM\'su root\' failed for lonvick on /dev/pts/8';
 
     $appender= $this->newFixture('su', '2003-10-11T22:14:15.003Z');
-    $appender->append(new LoggingEvent('testCat', time(), 1234, LogLevel::ERROR, [$message]));
+    $appender->append(new LoggingEvent('testCat', time(), 1234, $level, [$message]));
 
     $this->assertEquals(
       '<'.$priority.'>1 2003-10-11T22:14:15.003Z '.gethostname().' su '.getmypid().' - - '.$message,
