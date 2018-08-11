@@ -46,27 +46,6 @@ class SyslogUdpAppenderTest extends TestCase {
   }
 
   #[@test]
-  public function test_instanceFromConfig() {
-    $properties= new Properties('log');
-    $properties->load(new MemoryInputStream('
-[default]
-appenders="util.log.SyslogUdpAppender"
-appender.util.log.SyslogUdpAppender.params="ip|port|identifier|facility"
-appender.util.log.SyslogUdpAppender.param.ip="123.456.789.876"
-appender.util.log.SyslogUdpAppender.param.port="123"
-appender.util.log.SyslogUdpAppender.param.identifier="test_identifier"
-appender.util.log.SyslogUdpAppender.param.facility="123"
-    '));
-    $logger= Logger::getInstance();
-    $logger->configure($properties);
-    $appender= $logger->getCategory()->getAppenders()[0];
-    $this->assertEquals('123.456.789.876', $appender->ip);
-    $this->assertEquals('123', $appender->port);
-    $this->assertEquals('test_identifier', $appender->identifier);
-    $this->assertEquals('123', $appender->facility);
-  }
-
-  #[@test]
   public function test_sentData() {
     $testMessage= 'BOM\'su root\' failed for lonvick on /dev/pts/8';
 
