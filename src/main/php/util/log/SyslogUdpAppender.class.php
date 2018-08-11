@@ -43,7 +43,7 @@ class SyslogUdpAppender extends Appender {
     $this->ip= $ip;
     $this->port= $port;
     $this->facility= $facility;
-    $this->identifier= $identifier;
+    $this->identifier= $identifier ?: basename($_SERVER['PHP_SELF']);
   }
 
   /**
@@ -91,7 +91,7 @@ class SyslogUdpAppender extends Appender {
       '<'.$priority.'>1 '.
       $this->getCurrentDate().' '.
       $hostname.' '.
-      ($this->identifier ?: basename($_SERVER['PHP_SELF'])).' '.
+      $this->identifier.' '.
       $pid.' - - ';
   }
 
