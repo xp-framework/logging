@@ -26,9 +26,9 @@ class SyslogUdpAppender extends Appender {
   /**
    * SyslogUdpAppender constructor.
    *
-   * @param string $ip
+   * @param string $ip default 127.0.0.1
    * @param int $port default 514
-   * @param ?string $identifier default null (current filename)
+   * @param ?string $identifier - if omitted, uses PHP_SELF
    * @param int $facility default LOG_USER
    */
   public function __construct($ip= '127.0.0.1', $port= 514, $identifier= null, $facility= LOG_USER) {
