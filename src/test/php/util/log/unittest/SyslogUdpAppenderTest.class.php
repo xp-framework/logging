@@ -39,6 +39,24 @@ class SyslogUdpAppenderTest extends TestCase {
     $this->assertEquals(basename($_SERVER['PHP_SELF']), $fixture->identifier);
   }
 
+  #[@test]
+  public function identifier_can_be_set() {
+    $fixture= new SyslogUdpAppender('127.0.0.1', 514, 'test-identifier', LOG_USER);
+    $this->assertEquals('test-identifier', $fixture->identifier);
+  }
+
+  #[@test]
+  public function hostname_defaults_to_gethostname() {
+    $fixture= new SyslogUdpAppender('127.0.0.1', 514, null, LOG_USER);
+    $this->assertEquals(gethostname(), $fixture->hostname);
+  }
+
+  #[@test]
+  public function hostname_can_be_set() {
+    $fixture= new SyslogUdpAppender('127.0.0.1', 514, null, LOG_USER, 'test-host');
+    $this->assertEquals('test-host', $fixture->hostname);
+  }
+
   #[@test, @values('levels')]
   public function formatting($level, $priority) {
     $message= 'BOM\'su root\' failed for lonvick on /dev/pts/8';
