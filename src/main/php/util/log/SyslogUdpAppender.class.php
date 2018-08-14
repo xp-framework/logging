@@ -23,6 +23,9 @@ class SyslogUdpAppender extends Appender {
   /** @var int */
   public $port;
 
+  /** @var string */
+  public $hostname;
+
   /**
    * SyslogUdpAppender constructor.
    *
@@ -30,12 +33,14 @@ class SyslogUdpAppender extends Appender {
    * @param int $port default 514
    * @param ?string $identifier - if omitted, uses PHP_SELF
    * @param int $facility default LOG_USER
+   * @param ?string $hostname defaults to gethostname()
    */
-  public function __construct($ip= '127.0.0.1', $port= 514, $identifier= null, $facility= LOG_USER) {
+  public function __construct($ip= '127.0.0.1', $port= 514, $identifier= null, $facility= LOG_USER, $hostname= null) {
     $this->ip= $ip;
     $this->port= $port;
     $this->identifier= $identifier ?: basename($_SERVER['PHP_SELF']);
     $this->facility= $facility;
+    $this->hostname= $hostname ?: gethostname() ?: '-';
   }
 
   /**
@@ -69,7 +74,7 @@ class SyslogUdpAppender extends Appender {
       '<%d>1 %s %s %s %s - - ',
       $priority,
       $this->currentDate(),
-      (gethostname() ?: '-'),
+      $this->hostname,
       $this->identifier,
       (getmypid() ?: '-')
     );
