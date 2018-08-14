@@ -3,6 +3,13 @@ s Logging change log
 
 ## ?.?.? / ????-??-??
 
+## 8.3.0 / 2018-08-14
+
+* Merged PR #9: Make hostname configurable via constructor / configure().
+  For use in Docker containers, which have senseless hostnames. Users may
+  want to pass in another identifier, such as the cluster name.
+  (@johannes85, @thekid).
+
 ## 8.2.0 / 2018-08-11
 
 * Made Logger::configure() return the logger itself - @thekid
