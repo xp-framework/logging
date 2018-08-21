@@ -34,6 +34,9 @@ class ConsoleAppender extends Appender {
       throw new IllegalArgumentException('Expected either "out", "err" or an io.streams.StringWriter instance');
     }
   }
+
+  /** @return io.streams.StringWriter */
+  public function writer() { return $this->writer; }
   
   /**
    * Append data

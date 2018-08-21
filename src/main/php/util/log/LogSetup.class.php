@@ -65,11 +65,11 @@ class LogSetup implements Value {
   /**
    * Returns a logging category with a console appender attached
    *
-   * @param  bool $colors
    * @param  string $target
+   * @param  bool $colors
    * @return util.log.LogCategory
    */
-  public function toConsole($colors= true, $target= 'err') {
+  public function toConsole($target= 'err', $colors= true) {
     return self::to($colors ? new ColoredConsoleAppender($target) : new ConsoleAppender($target));
   }
 
