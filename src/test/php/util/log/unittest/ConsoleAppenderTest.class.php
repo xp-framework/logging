@@ -46,14 +46,14 @@ class ConsoleAppenderTest extends TestCase {
   public function append_to_stderr() {
     $stream= new MemoryOutputStream();
 
-    $err= Console::$err->stream();
-    Console::$err->redirect($stream);
+    $err= Console::$err->getStream();
+    Console::$err->setStream($stream);
 
     try {
       $this->category('err')->warn('Test');
       $this->assertEquals('[LOG] Test', $stream->getBytes());
     } finally {
-      Console::$err->redirect($err);
+      Console::$err->setStream($err);
     }
   }
 
@@ -61,14 +61,14 @@ class ConsoleAppenderTest extends TestCase {
   public function append_to_stdout() {
     $stream= new MemoryOutputStream();
 
-    $out= Console::$out->stream();
-    Console::$out->redirect($stream);
+    $out= Console::$out->getStream();
+    Console::$out->setStream($stream);
 
     try {
       $this->category('out')->warn('Test');
       $this->assertEquals('[LOG] Test', $stream->getBytes());
     } finally {
-      Console::$out->redirect($out);
+      Console::$out->setStream($out);
     }
   }
 }
