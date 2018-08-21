@@ -1,12 +1,12 @@
 <?php namespace util\log\unittest;
 
+use io\streams\MemoryOutputStream;
 use unittest\TestCase;
 use util\cmd\Console;
 use util\log\ConsoleAppender;
-use util\log\LogCategory;
 use util\log\Layout;
+use util\log\LogCategory;
 use util\log\LoggingEvent;
-use io\streams\MemoryOutputStream;
 
 /**
  * TestCase
@@ -15,39 +15,60 @@ use io\streams\MemoryOutputStream;
  * @see   xp://util.log.ConsoleAppender
  */
 class ConsoleAppenderTest extends TestCase {
-  private $cat, $stream;
 
   /**
-   * Sets up test case and backups Console::$err stream.
+   * Creates a ConsoleAppender with a given target
    *
-   * @return void
+   * @param  string $target
+   * @return util.log.LogCategoy
    */
-  public function setUp() {
-    $this->cat= (new LogCategory('default'))->withAppender(
-      (new ConsoleAppender())->withLayout(newinstance(Layout::class, [], [
+  private function category($target) {
+    return (new LogCategory('default'))->withAppender(
+      (new ConsoleAppender($target))->withLayout(newinstance(Layout::class, [], [
         'format' => function(LoggingEvent $event) {
-          return implode(' ', $event->getArguments());
+          return '[LOG] '.implode(' ', $event->getArguments());
         }
       ]))
     );
-    $this->stream= Console::$err->getStream();
-  }
-
-  /**
-   * Restores Console::$err stream.
-   *
-   * @return void
-   */
-  public function tearDown() {
-    Console::$err->setStream($this->stream);
   }
 
   #[@test]
-  public function appendMessage() {
-    with ($message= 'Test', $stream= new MemoryOutputStream()); {
-      Console::$err->setStream($stream);
-      $this->cat->warn($message);
-      $this->assertEquals($message, $stream->getBytes());
+  public function can_create() {
+    new ConsoleAppender();
+  }
+
+  #[@test, @values(['out', 'err', Console::$out, Console::$err])]
+  public function can_create_with($target) {
+    new ConsoleAppender($target);
+  }
+
+  #[@test]
+  public function append_to_stderr() {
+    $stream= new MemoryOutputStream();
+
+    $err= Console::$err->stream();
+    Console::$err->redirect($stream);
+
+    try {
+      $this->category('err')->warn('Test');
+      $this->assertEquals('[LOG] Test', $stream->getBytes());
+    } finally {
+      Console::$err->redirect($err);
+    }
+  }
+
+  #[@test]
+  public function append_to_stdout() {
+    $stream= new MemoryOutputStream();
+
+    $out= Console::$out->stream();
+    Console::$out->redirect($stream);
+
+    try {
+      $this->category('out')->warn('Test');
+      $this->assertEquals('[LOG] Test', $stream->getBytes());
+    } finally {
+      Console::$out->redirect($out);
     }
   }
 }
