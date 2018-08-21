@@ -30,7 +30,7 @@ class ColoredConsoleAppender extends ConsoleAppender {
    * @param  [:string] $colors
    * @throws lang.IllegalArgumentException
    */
-  public function __construct($target= 'err', $colors= []) {
+  public function __construct($target= 'out', $colors= []) {
     parent::__construct($target);
     $this->colors= array_merge(self::$DEFAULTS, $colors);
   }

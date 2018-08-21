@@ -23,7 +23,7 @@ class ConsoleAppender extends Appender {
    * @param  string|io.streams.StringWriter $target
    * @throws lang.IllegalArgumentException
    */
-  public function __construct($target= 'err') {
+  public function __construct($target= 'out') {
     if ($target instanceof StringWriter) {
       $this->writer= $target;
     } else if ('out' === $target) {

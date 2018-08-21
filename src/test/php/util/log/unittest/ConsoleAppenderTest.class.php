@@ -43,6 +43,11 @@ class ConsoleAppenderTest extends TestCase {
   }
 
   #[@test]
+  public function writes_to_stdout_by_default() {
+    $this->assertEquals(Console::$out, (new ConsoleAppender())->writer());
+  }
+
+  #[@test]
   public function append_to_stderr() {
     $stream= new MemoryOutputStream();
 
