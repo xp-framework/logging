@@ -50,6 +50,7 @@ The following appenders are available:
 * `util.log.SmtpAppender(string $email, string $prefix= "", bool $sync= true)` - Logs by email to a given email address
 * `util.log.StreamAppender(io.streams.OutputStream $out)` - Logs to any output stream from `io.streams`.
 * `util.log.SyslogAppender(string $identifier, int $facility= LOG_USER)` - Logs using syslog facility
+* `util.log.SyslogUdpAppender(string $ip= '127.0.0.1', int $port= 514, string $identifier= null, int $facility= LOG_USER, string $hostname= null)` - Logs using syslog protocol over UDP
 * `util.log.BufferedAppender()` - Logs to a memory buffer
 
 Layout
