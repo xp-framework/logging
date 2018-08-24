@@ -5,6 +5,11 @@ s Logging change log
 
 ## 9.0.0 / ????-??-??
 
+* **Heads up**: Removed deprecated `util.log.Logger` class. See issue #11
+  (@thekid)
+* Merged PR #12: Add util.log.LogConfiguration; replacing the deprecated
+  singleton Logger class
+  (@thekid, @johannes85)
 * Merged PR #10: Change ConsoleAppender to log to standard output by
   default. Also applies to ColoredConsoleAppender.
   (@thekid)
