@@ -3,7 +3,7 @@ s Logging change log
 
 ## ?.?.? / ????-??-??
 
-## 9.0.0 / ????-??-??
+## 9.0.0 / 2018-08-24
 
 * **Heads up**: Removed deprecated `util.log.Logger` class. See issue #11
   (@thekid)
