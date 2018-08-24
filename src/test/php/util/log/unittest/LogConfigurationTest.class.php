@@ -1,6 +1,8 @@
 <?php namespace util\log\unittest;
 
 use io\streams\MemoryInputStream;
+use lang\FormatException;
+use lang\IllegalArgumentException;
 use unittest\TestCase;
 use util\Objects;
 use util\Properties;
@@ -57,7 +59,7 @@ class LogConfigurationTest extends TestCase {
   }
 
   #[@test]
-  public function category_returns_appender_from_class() {
+  public function appender_configured_via_class() {
     $config= new LogConfiguration($this->properties('
       [default]
       class=util.log.ConsoleAppender
@@ -68,7 +70,7 @@ class LogConfigurationTest extends TestCase {
   }
 
   #[@test]
-  public function category_returns_appenders_from_uses() {
+  public function appenders_referenced_via_uses() {
     $config= new LogConfiguration($this->properties('
       [default]
       uses=console|files
@@ -83,6 +85,51 @@ class LogConfigurationTest extends TestCase {
 
     $appenders= $config->category('default')->getAppenders();
     $this->assertEquals(2, sizeof($appenders), Objects::stringOf($appenders));
+  }
+
+  #[@test]
+  public function uses_can_be_nested() {
+    $config= new LogConfiguration($this->properties('
+      [default]
+      uses=tee
+
+      [tee]
+      class=util.log.ConsoleAppender
+      uses=syslog|files
+
+      [syslog]
+      class=util.log.SyslogAppender
+
+      [files]
+      class=util.log.FileAppender
+      args=test.log
+    '));
+
+    $appenders= $config->category('default')->getAppenders();
+    $this->assertEquals(3, sizeof($appenders), Objects::stringOf($appenders));
+  }
+
+  #[@test, @expect(
+  #  class= FormatException::class,
+  #  withMessage= 'Uses in section "default" references non-existant section "missing"'
+  #)]
+  public function uses_referencing_non_existant_section() {
+    new LogConfiguration($this->properties('
+      [default]
+      uses=console|missing
+
+      [console]
+      class=util.log.ConsoleAppender
+    '));
+  }
+
+  #[@test, @expect(
+  #  class= IllegalArgumentException::class,
+  #  withMessage= 'No log category "default"'
+  #)]
+  public function missing_category() {
+    $config= new LogConfiguration($this->properties(''));
+    $config->category('default');
   }
 
   #[@test]

@@ -1,5 +1,6 @@
 <?php namespace util\log;
 
+use lang\FormatException;
 use lang\IllegalArgumentException;
 use lang\XPClass;
 use util\PropertyAccess;
@@ -48,6 +49,7 @@ class LogConfiguration {
    * @param  util.PropertyAccess $properties
    * @param  string $section
    * @return iterable
+   * @throws lang.FormatException
    */
   private function appendersFor($properties, $section) {
 
@@ -68,6 +70,9 @@ class LogConfiguration {
     // Uses, referencing other section
     if ($uses= $properties->readArray($section, 'uses', null)) {
       foreach ($uses as $use) {
+        if (!$properties->hasSection($use)) {
+          throw new FormatException('Uses in section "'.$section.'" references non-existant section "'.$use.'"');
+        }
         foreach ($this->appendersFor($properties, $use) as $level => $appender) {
           yield $level => $appender;
         }
