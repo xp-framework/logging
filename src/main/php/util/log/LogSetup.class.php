@@ -1,8 +1,8 @@
 <?php namespace util\log;
 
-use util\log\layout\DefaultLayout;
 use lang\Value;
 use util\Objects;
+use util\log\layout\DefaultLayout;
 
 /**
  * Logging DSL
@@ -65,11 +65,12 @@ class LogSetup implements Value {
   /**
    * Returns a logging category with a console appender attached
    *
+   * @param  string $target
    * @param  bool $colors
    * @return util.log.LogCategory
    */
-  public function toConsole($colors= true) {
-    return self::to($colors ? new ColoredConsoleAppender() : new ConsoleAppender());
+  public function toConsole($target= 'err', $colors= true) {
+    return self::to($colors ? new ColoredConsoleAppender($target) : new ConsoleAppender($target));
   }
 
   /**

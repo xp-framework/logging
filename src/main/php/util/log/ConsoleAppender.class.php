@@ -1,5 +1,7 @@
 <?php namespace util\log;
 
+use io\streams\StringWriter;
+use lang\IllegalArgumentException;
 use util\cmd\Console;
 
 /**
@@ -17,15 +19,30 @@ class ConsoleAppender extends Appender {
 
   /**
    * Constructor
+   *
+   * @param  string|io.streams.StringWriter $target
+   * @throws lang.IllegalArgumentException
    */
-  public function __construct() {
-    $this->writer= Console::$err;
+  public function __construct($target= 'out') {
+    if ($target instanceof StringWriter) {
+      $this->writer= $target;
+    } else if ('out' === $target) {
+      $this->writer= Console::$out;
+    } else if ('err' === $target) {
+      $this->writer= Console::$err;
+    } else {
+      throw new IllegalArgumentException('Expected either "out", "err" or an io.streams.StringWriter instance');
+    }
   }
+
+  /** @return io.streams.StringWriter */
+  public function writer() { return $this->writer; }
   
   /**
    * Append data
    *
-   * @param   util.log.LoggingEvent event
+   * @param  util.log.LoggingEvent event
+   * @return void
    */ 
   public function append(LoggingEvent $event) {
     $this->writer->write($this->layout->format($event));
