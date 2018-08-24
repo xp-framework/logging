@@ -3,6 +3,12 @@ s Logging change log
 
 ## ?.?.? / ????-??-??
 
+## 9.0.0 / ????-??-??
+
+* Merged PR #10: Change ConsoleAppender to log to standard output by
+  default. Also applies to ColoredConsoleAppender.
+  (@thekid)
+
 ## 8.3.0 / 2018-08-14
 
 * Merged PR #9: Make hostname configurable via constructor / configure().
