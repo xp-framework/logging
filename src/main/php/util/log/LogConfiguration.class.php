@@ -54,7 +54,7 @@ class LogConfiguration {
     // Class
     if ($class= $properties->readString($section, 'class', null)) {
       $appender= XPClass::forName($class)->newInstance(...$properties->readArray($section, 'args', []));
-      if ($levels= $properties->readArray($section, 'levels', null)) {
+      if ($levels= $properties->readArray($section, 'level', null)) {
         $level= LogLevel::NONE;
         foreach ($levels as $name) {
           $level |= LogLevel::named($name);

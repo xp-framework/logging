@@ -5,6 +5,7 @@ use unittest\TestCase;
 use util\Objects;
 use util\Properties;
 use util\log\ConsoleAppender;
+use util\log\FileAppender;
 use util\log\LogConfiguration;
 use util\log\LogLevel;
 
@@ -94,5 +95,26 @@ class LogConfigurationTest extends TestCase {
 
     $appenders= $config->category('default')->getAppenders();
     $this->assertEquals('test.log', $appenders[0]->filename);
+  }
+
+  #[@test]
+  public function categories_with_loglevels() {
+    $config= new LogConfiguration($this->properties('
+      [default]
+      uses=console|files
+
+      [console]
+      class=util.log.ConsoleAppender
+      level=INFO
+
+      [files]
+      class=util.log.FileAppender
+      args=test.log
+      level=ERROR
+    '));
+
+    $cat= $config->category('default');
+    $this->assertInstanceOf(ConsoleAppender::class, $cat->getAppenders(LogLevel::INFO)[0]);
+    $this->assertInstanceOf(FileAppender::class, $cat->getAppenders(LogLevel::ERROR)[0]);
   }
 }
