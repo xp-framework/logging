@@ -74,6 +74,29 @@ supported:
 * `%n` - A line break
 * `%x` - Context information, if available
 
+Configuration
+-------------
+Instead of using the [Logging DSL](https://github.com/xp-framework/logging/pull/6) to create your log setup programmatically, you can use the [configuration API](https://github.com/xp-framework/logging/pull/12), which works with INI files:
+
+```ini
+[default]
+uses=console|syslog|files
+
+[console]
+class=util.log.ConsoleAppender
+level=ALL
+
+[files]
+class=util.log.FileAppender
+args="/var/log/server.log"
+level=ALL
+
+[syslog]
+class=util.log.SyslogUdpAppender
+args=127.0.0.1|514|server
+level=WARN|ERROR
+```
+
 Further reading
 ---------------
 * [Log Contexts](https://github.com/xp-framework/xp-framework/pull/239)
