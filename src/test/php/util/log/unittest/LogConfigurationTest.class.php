@@ -124,6 +124,29 @@ class LogConfigurationTest extends TestCase {
   }
 
   #[@test, @expect(
+  #  class= FormatException::class,
+  #  withMessage= 'Class util.log.NonExistantAppender in section "default" cannot be instantiated'
+  #)]
+  public function non_existant_appender() {
+    new LogConfiguration($this->properties('
+      [default]
+      class=util.log.NonExistantAppender
+    '));
+  }
+
+  #[@test, @expect(
+  #  class= FormatException::class,
+  #  withMessage= 'Level TEST in section "default" not recognized'
+  #)]
+  public function non_existant_level() {
+    new LogConfiguration($this->properties('
+      [default]
+      class=util.log.ConsoleAppender
+      level=TEST
+    '));
+  }
+
+  #[@test, @expect(
   #  class= IllegalArgumentException::class,
   #  withMessage= 'No log category "default"'
   #)]

@@ -2,6 +2,7 @@
 
 use lang\FormatException;
 use lang\IllegalArgumentException;
+use lang\Throwable;
 use lang\XPClass;
 use util\PropertyAccess;
 
@@ -32,7 +33,12 @@ use util\PropertyAccess;
 class LogConfiguration {
   private $categories= [];
 
-  /** Creates a new log configuration from a properties file */
+  /**
+   * Creates a new log configuration from a properties file
+   *
+   * @param  util.PropertyAccess $properties
+   * @throws lang.FormatException if the property file contains errors
+   */
   public function __construct(PropertyAccess $properties) {
     foreach ($properties->sections() as $section) {
       $cat= new LogCategory($section);
@@ -52,14 +58,30 @@ class LogConfiguration {
    * @throws lang.FormatException
    */
   private function appendersFor($properties, $section) {
+    static $names= [
+      'INFO'  => LogLevel::INFO,
+      'WARN'  => LogLevel::WARN,
+      'ERROR' => LogLevel::ERROR,
+      'DEBUG' => LogLevel::DEBUG,
+      'ALL'   => LogLevel::ALL,
+      'NONE'  => LogLevel::NONE,
+    ];
 
     // Class
     if ($class= $properties->readString($section, 'class', null)) {
-      $appender= XPClass::forName($class)->newInstance(...$properties->readArray($section, 'args', []));
+      try {
+        $appender= XPClass::forName($class)->newInstance(...$properties->readArray($section, 'args', []));
+      } catch (Throwable $e) {
+        throw new FormatException('Class '.$class.' in section "'.$section.'" cannot be instantiated', $e);
+      }
+
       if ($levels= $properties->readArray($section, 'level', null)) {
         $level= LogLevel::NONE;
         foreach ($levels as $name) {
-          $level |= LogLevel::named($name);
+          if (!isset($names[$name])) {
+            throw new FormatException('Level '.$name.' in section "'.$section.'" not recognized');
+          }
+          $level |= $names[$name];
         }
         yield $level => $appender;
       } else {
