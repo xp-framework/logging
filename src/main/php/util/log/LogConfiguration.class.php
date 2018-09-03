@@ -50,6 +50,34 @@ class LogConfiguration {
   }
 
   /**
+   * Creates a new log appender from a class and arguments, which are either
+   * a list matching the constructor argument order or a map of named arguments.
+   *
+   * @param  lang.XPClass $class
+   * @param  var[]|[:var] $args
+   * @return util.log.LogAppender
+   * @throws lang.FormatException
+   */
+  private function newAppender($class, $args) {
+    if (null === ($c= $class->getConstructor())) {
+      return $class->newInstance();
+    } else if (0 === key($args)) {
+      return $c->newInstance($args);
+    } else {
+      $pass= [];
+      foreach ($c->getParameters() as $param) {
+        $name= $param->getName();
+        $pass[]= isset($args[$name]) ? $args[$name] : $param->getDefaultValue();
+        unset($args[$name]);
+      }
+      if ($args) {
+        throw new FormatException('Unknown named argument(s) '.implode(', ', array_keys($args)));
+      }
+      return $c->newInstance($pass);
+    }
+  }
+
+  /**
    * Returns log appenders for a given property file section
    *
    * @param  util.PropertyAccess $properties
@@ -70,7 +98,7 @@ class LogConfiguration {
     // Class
     if ($class= $properties->readString($section, 'class', null)) {
       try {
-        $appender= XPClass::forName($class)->newInstance(...$properties->readArray($section, 'args', []));
+        $appender= $this->newAppender(XPClass::forName($class), $properties->readArray($section, 'args', []));
       } catch (Throwable $e) {
         throw new FormatException('Class '.$class.' in section "'.$section.'" cannot be instantiated', $e);
       }

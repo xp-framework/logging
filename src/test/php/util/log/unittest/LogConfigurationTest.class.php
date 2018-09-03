@@ -1,15 +1,18 @@
 <?php namespace util\log\unittest;
 
 use io\streams\MemoryInputStream;
+use lang\ClassLoader;
 use lang\FormatException;
 use lang\IllegalArgumentException;
 use unittest\TestCase;
 use util\Objects;
 use util\Properties;
+use util\log\Appender;
 use util\log\ConsoleAppender;
 use util\log\FileAppender;
 use util\log\LogConfiguration;
 use util\log\LogLevel;
+use util\log\LoggingEvent;
 
 class LogConfigurationTest extends TestCase {
 
@@ -189,6 +192,56 @@ class LogConfigurationTest extends TestCase {
 
     $appenders= $config->category('default')->getAppenders();
     $this->assertEquals('test.log', $appenders[0]->filename);
+  }
+
+  #[@test, @expect(FormatException::class)]
+  public function category_with_class_and_missing_argument() {
+    ClassLoader::defineClass('util.log.unittest.LogConfigurationTest_Appender', Appender::class, [], [
+      '__construct' => function($arg) { /* ... */ },
+      'append' => function(LoggingEvent $event) { /* ... */ },
+    ]);
+    $config= new LogConfiguration($this->properties('
+      [default]
+      class=util.log.unittest.LogConfigurationTest_Appender
+    '));
+
+    $config->category('default')->getAppenders();
+  }
+
+  #[@test]
+  public function category_with_class_and_named_argument() {
+    $config= new LogConfiguration($this->properties('
+      [default]
+      class=util.log.FileAppender
+      args[file]=test.log
+    '));
+
+    $appenders= $config->category('default')->getAppenders();
+    $this->assertEquals('test.log', $appenders[0]->filename);
+  }
+
+  #[@test]
+  public function category_with_class_and_named_arguments() {
+    $config= new LogConfiguration($this->properties('
+      [default]
+      class=util.log.SyslogUdpAppender
+      args[ip]=127.0.0.1
+      args[identifier]=test
+    '));
+
+    $appenders= $config->category('default')->getAppenders();
+    $this->assertEquals('127.0.0.1:514', $appenders[0]->ip.':'.$appenders[0]->port);
+  }
+
+  #[@test, @expect(FormatException::class)]
+  public function category_with_non_existant_named_argument() {
+    $config= new LogConfiguration($this->properties('
+      [default]
+      class=util.log.SyslogUdpAppender
+      args[non-existant-parameter]=***
+    '));
+
+    $config->category('default')->getAppenders();
   }
 
   #[@test]
