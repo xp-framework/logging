@@ -13,6 +13,7 @@ use util\log\FileAppender;
 use util\log\LogConfiguration;
 use util\log\LogLevel;
 use util\log\LoggingEvent;
+use util\log\layout\PatternLayout;
 
 class LogConfigurationTest extends TestCase {
 
@@ -263,5 +264,17 @@ class LogConfigurationTest extends TestCase {
     $cat= $config->category('default');
     $this->assertInstanceOf(ConsoleAppender::class, $cat->getAppenders(LogLevel::INFO)[0]);
     $this->assertInstanceOf(FileAppender::class, $cat->getAppenders(LogLevel::ERROR)[0]);
+  }
+
+  #[@test]
+  public function category_with_class_and_layout() {
+    $config= new LogConfiguration($this->properties('
+      [default]
+      class=util.log.SyslogUdpAppender
+      layout=util.log.layout.PatternLayout|%c - %m
+    '));
+
+    $appenders= $config->category('default')->getAppenders();
+    $this->assertEquals(new PatternLayout('%c - %m'), $appenders[0]->getLayout());
   }
 }
