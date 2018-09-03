@@ -3,6 +3,9 @@ s Logging change log
 
 ## ?.?.? / ????-??-??
 
+* Merged PR #13: Add support for named arguments via configuration file
+  (@thekid)
+
 ## 9.0.0 / 2018-08-24
 
 * **Heads up**: Removed deprecated `util.log.Logger` class. See issue #11
