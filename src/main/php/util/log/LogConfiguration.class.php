@@ -100,8 +100,7 @@ class LogConfiguration {
       try {
         $appender= $this->newAppender(XPClass::forName($class), $properties->readArray($section, 'args', []));
         if ($layout= $properties->readArray($section, 'layout', null)) {
-          $class= array_shift($layout);
-          $appender->setLayout(XPClass::forName($class)->newInstance(...$layout));
+          $appender->setLayout(XPClass::forName(array_shift($layout))->newInstance(...$layout));
         }
       } catch (Throwable $e) {
         throw new FormatException('Class '.$class.' in section "'.$section.'" cannot be instantiated', $e);

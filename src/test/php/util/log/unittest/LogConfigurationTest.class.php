@@ -277,4 +277,15 @@ class LogConfigurationTest extends TestCase {
     $appenders= $config->category('default')->getAppenders();
     $this->assertEquals(new PatternLayout('%c - %m'), $appenders[0]->getLayout());
   }
+
+  #[@test, @expect(FormatException::class)]
+  public function category_with_class_and_non_existant_layout() {
+    $config= new LogConfiguration($this->properties('
+      [default]
+      class=util.log.SyslogUdpAppender
+      layout=util.log.layout.NonExistantLayout
+    '));
+
+    $config->category('default')->getAppenders();
+  }
 }
