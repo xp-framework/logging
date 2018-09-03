@@ -180,6 +180,18 @@ class LogConfigurationTest extends TestCase {
   }
 
   #[@test]
+  public function category_with_class_and_array_argument() {
+    $config= new LogConfiguration($this->properties('
+      [default]
+      class=util.log.FileAppender
+      args[]=test.log
+    '));
+
+    $appenders= $config->category('default')->getAppenders();
+    $this->assertEquals('test.log', $appenders[0]->filename);
+  }
+
+  #[@test]
   public function categories_with_loglevels() {
     $config= new LogConfiguration($this->properties('
       [default]
