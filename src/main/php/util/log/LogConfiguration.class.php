@@ -59,13 +59,13 @@ class LogConfiguration {
    * @throws lang.FormatException
    */
   private function newAppender($class, $args) {
-    if (empty($args)) {
+    if (null === ($c= $class->getConstructor())) {
       return $class->newInstance();
     } else if (0 === key($args)) {
-      return $class->newInstance(...$args);
+      return $c->newInstance($args);
     } else {
       $pass= [];
-      foreach ($class->getConstructor()->getParameters() as $param) {
+      foreach ($c->getParameters() as $param) {
         $name= $param->getName();
         $pass[]= isset($args[$name]) ? $args[$name] : $param->getDefaultValue();
         unset($args[$name]);
@@ -73,7 +73,7 @@ class LogConfiguration {
       if ($args) {
         throw new FormatException('Unknown named argument(s) '.implode(', ', array_keys($args)));
       }
-      return $class->newInstance(...$pass);
+      return $c->newInstance($pass);
     }
   }
 
