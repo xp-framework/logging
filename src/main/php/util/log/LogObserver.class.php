@@ -3,6 +3,7 @@
 /**
  * Observer interface
  *
+ * @test  xp://util.log.unittest.LogObserverTest
  * @see   xp://util.Observable
  */
 class LogObserver implements BoundLogObserver {
