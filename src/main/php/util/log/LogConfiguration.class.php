@@ -99,6 +99,15 @@ class LogConfiguration {
     if ($class= $properties->readString($section, 'class', null)) {
       try {
         $appender= $this->newAppender(XPClass::forName($class), $properties->readArray($section, 'args', []));
+        if ($layout= $properties->readString($section, 'layout', null)) {
+          if (false !== ($p= strcspn($layout, '('))) {
+            $appender->setLayout(XPClass::forName(substr($layout, 0, $p))->newInstance(...eval(
+              'return ['.substr($layout, $p + 1, -1).'];'
+            )));
+          } else {
+            $appender->setLayout(XPClass::forName($layout)->newInstance());
+          }
+        }
       } catch (Throwable $e) {
         throw new FormatException('Class '.$class.' in section "'.$section.'" cannot be instantiated', $e);
       }
