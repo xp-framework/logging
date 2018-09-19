@@ -3,6 +3,10 @@ s Logging change log
 
 ## ?.?.? / ????-??-??
 
+## 9.1.0 / 2018-09-19
+
+* Merged PR #14: Make layout configurable via "layout" in log configuration
+  (@thekid)
 * Merged PR #13: Add support for named arguments via configuration file
   (@thekid)
 
