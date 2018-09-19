@@ -271,7 +271,7 @@ class LogConfigurationTest extends TestCase {
     $config= new LogConfiguration($this->properties('
       [default]
       class=util.log.SyslogUdpAppender
-      layout=util.log.layout.PatternLayout|%c - %m
+      layout=util.log.layout.PatternLayout("%c - %m")
     '));
 
     $appenders= $config->category('default')->getAppenders();
