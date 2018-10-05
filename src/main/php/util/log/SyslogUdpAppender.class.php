@@ -36,12 +36,6 @@ class SyslogUdpAppender extends Appender {
    * @param ?string $hostname defaults to gethostname()
    */
   public function __construct($ip= '127.0.0.1', $port= 514, $identifier= null, $facility= LOG_USER, $hostname= null) {
-    printf('Constructing SyslogUdpAppender');
-    var_dump('SyslogUdpAppender');
-    var_dump($hostname);
-    var_dump($port);
-    var_dump($identifier);
-    var_dump($facility);
     $this->ip= $ip;
     $this->port= $port;
     $this->identifier= $identifier ?: basename($_SERVER['PHP_SELF']);
@@ -56,11 +50,6 @@ class SyslogUdpAppender extends Appender {
    * @return void
    */
   public function append(LoggingEvent $event) {
-    printf('Logging to UDP\n');
-    var_dump($this->hostname);
-    var_dump($this->port);
-    var_dump($this->identifier);
-    var_dump($this->facility);
     $header= $this->header($event);
     $this->send($header.substr($this->layout->format($event), 0, self::DATAGRAM_MAX_LENGTH - strlen($header)));
   }
@@ -101,9 +90,6 @@ class SyslogUdpAppender extends Appender {
     if ($this->socket === null) {
       $this->socket= socket_create(AF_INET, SOCK_DGRAM, SOL_UDP);
     }
-    var_dump($buffer);
-    var_dump($this->ip);
-    var_dump($this->port);
     socket_sendto($this->socket, $buffer, strlen($buffer), 0, $this->ip, $this->port);
   }
 
