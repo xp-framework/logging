@@ -3,6 +3,10 @@ Logging change log
 
 ## ?.?.? / ????-??-??
 
+## 6.7.0 / 2018-10-05
+
+* Merged PR #15: Backported SyslogUdpAppender to version 6.x - @OlafSeng
+
 ## 6.6.0 / 2016-01-10
 
 * **Heads up: Upgrade your runners before using this release!**
