@@ -3,6 +3,10 @@ s Logging change log
 
 ## ?.?.? / ????-??-??
 
+## 9.1.1 / 2018-11-05
+
+* Fixed issue #16: Colors incorrect - @thekid
+
 ## 9.1.0 / 2018-09-19
 
 * Merged PR #14: Make layout configurable via "layout" in log configuration

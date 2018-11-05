@@ -9,6 +9,7 @@
  * @see  http://www.catalyst.com/support/help/cstools3/visual/terminal/escapeseq.html
  * @see  http://www.termsys.demon.co.uk/vtansi.htm#colors  
  * @see  xp://util.log.ConsoleAppender
+ * @test xp://util.log.unittest.ColoredConsoleAppenderTest
  */  
 class ColoredConsoleAppender extends ConsoleAppender {
   private static $DEFAULTS;
@@ -32,8 +33,11 @@ class ColoredConsoleAppender extends ConsoleAppender {
    */
   public function __construct($target= 'out', $colors= []) {
     parent::__construct($target);
-    $this->colors= array_merge(self::$DEFAULTS, $colors);
+    $this->colors= array_replace(self::$DEFAULTS, $colors);
   }
+
+  /** @return [:string] */
+  public function colors() { return $this->colors; }
   
   /**
    * Append data
