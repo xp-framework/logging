@@ -3,6 +3,10 @@ s Logging change log
 
 ## ?.?.? / ????-??-??
 
+* Replaced all calls to the deprecated `xp::stringOf()` to use the method
+  from `util.Objects`.
+  (@thekid)
+
 ## 9.1.1 / 2018-11-05
 
 * Fixed issue #16: Colors incorrect - @thekid

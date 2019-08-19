@@ -1,6 +1,7 @@
 <?php namespace util\log;
 
-use lang\Value; 
+use lang\Value;
+use util\Objects;
 
 /**
  * Abstract base class for appenders
@@ -58,7 +59,7 @@ abstract class Appender implements Value {
 
   /** @return string */
   public function toString() {
-    return nameof($this).'(layout= '.\xp::stringOf($this->layout).')';
+    return nameof($this).'(layout= '.Objects::stringOf($this->layout).')';
   }
 
   /** @return string */

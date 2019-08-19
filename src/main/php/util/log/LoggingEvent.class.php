@@ -1,5 +1,7 @@
 <?php namespace util\log;
 
+use util\Objects;
+
 /**
  * A single log event
  *
@@ -97,7 +99,7 @@ class LoggingEvent {
       date('r', $this->timestamp),
       $this->processId,
       null === ($context= $this->getContext()) ? '' : ' '.$context->toString(),
-      \xp::stringOf($this->arguments)
+      Objects::stringOf($this->arguments)
     );
   }
 }
