@@ -1,8 +1,8 @@
 <?php namespace util\log\layout;
 
 use lang\IllegalArgumentException;
-use util\log\LoggingEvent;
 use util\log\LogLevel;
+use util\log\LoggingEvent;
 
 /**
  * Pattern layout
@@ -37,11 +37,11 @@ class PatternLayout extends \util\log\Layout {
    */
   public function __construct($format) {
     for ($i= 0, $s= strlen($format); $i < $s; $i++) {
-      if ('%' === $format{$i}) {
+      if ('%' === $format[$i]) {
         if (++$i >= $s) {
           throw new IllegalArgumentException('Not enough input at position '.($i - 1));
         }
-        switch ($format{$i}) {
+        switch ($format[$i]) {
           case '%': {   // Literal percent
             $this->format[]= '%'; 
             break;
@@ -51,14 +51,14 @@ class PatternLayout extends \util\log\Layout {
             break;
           }
           default: {    // Any other character - verify it's supported
-            if (!strspn($format{$i}, 'mclLtdpx')) {
-              throw new IllegalArgumentException('Unknown format token "'.$format{$i}.'"');
+            if (!strspn($format[$i], 'mclLtdpx')) {
+              throw new IllegalArgumentException('Unknown format token "'.$format[$i].'"');
             }
-            $this->format[]= '%'.$format{$i};
+            $this->format[]= '%'.$format[$i];
           }
         }
       } else {
-        $this->format[]= $format{$i};
+        $this->format[]= $format[$i];
       }
     }
   }

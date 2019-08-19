@@ -3,6 +3,8 @@ s Logging change log
 
 ## ?.?.? / ????-??-??
 
+* Made compatible with PHP 7.4 - refrain using `{}` for string offsets
+  (@thekid)
 * Replaced all calls to the deprecated `xp::stringOf()` to use the method
   from `util.Objects`.
   (@thekid)
