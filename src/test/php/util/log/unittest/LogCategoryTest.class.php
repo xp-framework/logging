@@ -1,8 +1,8 @@
 <?php namespace util\log\unittest;
  
-use util\log\{Appender, Context, LogCategory, LogLevel, Logger, LoggingEvent};
 use util\log\context\NestedLogContext;
 use util\log\layout\{DefaultLayout, PatternLayout};
+use util\log\{Appender, Context, LogCategory, LogLevel, Logger, LoggingEvent};
 
 class LogCategoryTest extends \unittest\TestCase {
   
@@ -13,15 +13,15 @@ class LogCategoryTest extends \unittest\TestCase {
    * @return  util.log.Appender
    */
   private function mockAppender() {
-    $appender= newinstance(Appender::class, [], [
-      'messages' => [],
-      'append' => function(LoggingEvent $event) {
+    $appender= new class() extends Appender {
+      public $messages= [];
+      public function append(LoggingEvent $event) {
         $this->messages[]= [
           strtolower(LogLevel::nameOf($event->getLevel())), 
           $this->layout->format($event)
         ];
       }
-    ]);
+    };
     return $appender->withLayout(new PatternLayout('%m'));
   }
 

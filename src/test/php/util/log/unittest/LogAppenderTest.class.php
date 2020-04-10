@@ -2,27 +2,21 @@
 
 use unittest\TestCase;
 use util\collections\Vector;
-use util\log\{Appender, LogCategory, LoggingEvent};
 use util\log\layout\PatternLayout;
+use util\log\{Appender, LogCategory, LoggingEvent};
 
 class LogAppenderTest extends TestCase {
   private $fixture, $events;
 
-  /**
-   * Sets up test case
-   */
+  /** @return void */
   public function setUp() {
     $this->events= create('new util.collections.Vector<string>()');
-    $appender= newinstance(Appender::class, [$this->events], [
-      'events' => null,
-      '__construct' => function($events) { $this->events= $events; },
-      'append' => function(LoggingEvent $event) {
-        $this->events[]= $this->layout->format($event);
-      }
-    ]);
-    $this->fixture= (new LogCategory('default'))
-      ->withAppender($appender->withLayout(new PatternLayout('[%l] %m')))
-    ;
+    $appender= new class($this->events) extends Appender {
+      public $events;
+      public function __construct($events) { $this->events= $events; }
+      public function append(LoggingEvent $event) { $this->events[]= $this->layout->format($event); }
+    };
+    $this->fixture= (new LogCategory('default'))->withAppender($appender->withLayout(new PatternLayout('[%l] %m')));
   }
   
   #[@test]

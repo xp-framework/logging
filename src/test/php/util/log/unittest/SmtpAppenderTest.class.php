@@ -1,7 +1,7 @@
 <?php namespace util\log\unittest;
 
-use util\log\{LogLevel, SmtpAppender};
 use util\log\layout\PatternLayout;
+use util\log\{LogLevel, SmtpAppender};
 
 class SmtpAppenderTest extends AppenderTest {
 
@@ -13,12 +13,12 @@ class SmtpAppenderTest extends AppenderTest {
    * @return  util.log.SmtpAppender
    */
   protected function newFixture($prefix, $sync) {
-    $appender= newinstance(SmtpAppender::class, ['test@example.com', $prefix, $sync], '{
+    $appender= new class('test@example.com', $prefix, $sync) extends SmtpAppender {
       public $sent= [];
       protected function send($prefix, $content) {
         $this->sent[]= [$prefix, $content];
       }
-    }');
+    };
     return $appender->withLayout(new PatternLayout('[%l] %m'));
   }
 

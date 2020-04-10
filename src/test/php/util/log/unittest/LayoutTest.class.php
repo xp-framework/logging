@@ -9,15 +9,15 @@ class LayoutTest extends TestCase {
 
   /** @return void */
   public function setUp() {
-    $this->fixture= newinstance(Layout::class, [], [
-      'format' => function(LoggingEvent $event) {
+    $this->fixture= new class() extends Layout {
+      public function format(LoggingEvent $event) {
         $s= '[log]';
         foreach ($event->getArguments() as $arg) {
           $s.= ' '.$this->stringOf($arg);
         }
         return $s;
       }
-    ]);
+    };
     $this->tz= date_default_timezone_get();
     date_default_timezone_set('Europe/Berlin');
   }
