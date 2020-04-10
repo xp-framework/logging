@@ -47,7 +47,7 @@ class ColoredConsoleAppender extends ConsoleAppender {
   public function append(LoggingEvent $event) {
     $l= $event->getLevel();
     $this->writer->write(
-      "\x1b[".(isset($this->colors[$l]) ? $this->colors[$l] : '07;37')."m".
+      "\x1b[".($this->colors[$l] ?? '07;37')."m".
       $this->layout->format($event).
       "\x1b[0m"
     );

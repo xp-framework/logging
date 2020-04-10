@@ -64,7 +64,7 @@ class LogConfiguration {
       $pass= [];
       foreach ($c->getParameters() as $param) {
         $name= $param->getName();
-        $pass[]= isset($args[$name]) ? $args[$name] : $param->getDefaultValue();
+        $pass[]= $args[$name] ?? $param->getDefaultValue();
         unset($args[$name]);
       }
       if ($args) {

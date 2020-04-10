@@ -36,7 +36,7 @@ class MappedLogContext implements \util\log\Context {
    * @return string NULL if the current context map does not contain the specified key
    */
   public function get($key) {
-    return isset($this->queue[$key]) ? $this->queue[$key] : null;
+    return $this->queue[$key] ?? null;
   }
 
   /**

@@ -69,7 +69,7 @@ class SyslogUdpAppender extends Appender {
     ];
 
     $l= $event->getLevel();
-    $priority= $this->facility + (isset($map[$l]) ? $map[$l] : LOG_NOTICE);
+    $priority= $this->facility + ($map[$l] ?? LOG_NOTICE);
     return sprintf(
       '<%d>1 %s %s %s %s - - ',
       $priority,
