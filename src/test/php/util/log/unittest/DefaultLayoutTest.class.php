@@ -1,11 +1,9 @@
 <?php namespace util\log\unittest;
 
-use unittest\TestCase;
-use util\log\layout\DefaultLayout;
-use util\log\LoggingEvent;
-use util\log\LogCategory;
-use util\log\LogLevel;
 use lang\Value;
+use unittest\TestCase;
+use util\log\{LogCategory, LogLevel, LoggingEvent};
+use util\log\layout\DefaultLayout;
 
 class DefaultLayoutTest extends \unittest\TestCase {
   private $fixture, $tz;

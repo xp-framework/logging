@@ -2,8 +2,7 @@
 
 use unittest\TestCase;
 use util\Observable;
-use util\log\LogCategory;
-use util\log\LogObserver;
+use util\log\{LogCategory, LogObserver};
 
 class LogObserverTest extends TestCase {
 

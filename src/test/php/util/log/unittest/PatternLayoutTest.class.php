@@ -1,11 +1,9 @@
 <?php namespace util\log\unittest;
 
-use util\log\layout\PatternLayout;
-use util\log\context\MappedLogContext;
-use util\log\LoggingEvent;
-use util\log\LogLevel;
-use util\log\LogCategory;
 use lang\IllegalArgumentException;
+use util\log\{LogCategory, LogLevel, LoggingEvent};
+use util\log\context\MappedLogContext;
+use util\log\layout\PatternLayout;
 
 class PatternLayoutTest extends \unittest\TestCase {
 

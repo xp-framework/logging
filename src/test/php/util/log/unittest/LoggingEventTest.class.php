@@ -1,8 +1,6 @@
 <?php namespace util\log\unittest;
 
-use util\log\LoggingEvent;
-use util\log\LogCategory;
-use util\log\LogLevel;
+use util\log\{LogCategory, LogLevel, LoggingEvent};
 
 class LoggingEventTest extends \unittest\TestCase {
   private $fixture;

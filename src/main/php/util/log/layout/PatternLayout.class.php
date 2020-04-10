@@ -1,8 +1,7 @@
 <?php namespace util\log\layout;
 
 use lang\IllegalArgumentException;
-use util\log\LogLevel;
-use util\log\LoggingEvent;
+use util\log\{LogLevel, LoggingEvent};
 
 /**
  * Pattern layout

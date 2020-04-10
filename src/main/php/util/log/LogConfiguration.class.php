@@ -1,9 +1,6 @@
 <?php namespace util\log;
 
-use lang\FormatException;
-use lang\IllegalArgumentException;
-use lang\Throwable;
-use lang\XPClass;
+use lang\{FormatException, IllegalArgumentException, Throwable, XPClass};
 use util\PropertyAccess;
 
 /**

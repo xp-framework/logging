@@ -1,7 +1,6 @@
 <?php namespace util\log;
 
-use lang\Generic;
-use lang\Value;
+use lang\{Generic, Value};
 
 /**
  * Takes care of formatting log entries

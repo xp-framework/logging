@@ -1,14 +1,8 @@
 <?php namespace util\log\unittest;
  
-use util\log\layout\DefaultLayout;
-use util\log\LogCategory;
-use util\log\Logger;
-use util\log\Appender;
-use util\log\LogLevel;
-use util\log\LoggingEvent;
-use util\log\Context;
-use util\log\layout\PatternLayout;
+use util\log\{Appender, Context, LogCategory, LogLevel, Logger, LoggingEvent};
 use util\log\context\NestedLogContext;
+use util\log\layout\{DefaultLayout, PatternLayout};
 
 class LogCategoryTest extends \unittest\TestCase {
   

@@ -1,9 +1,7 @@
 <?php namespace util\log\unittest;
 
 use unittest\TestCase;
-use util\log\LogLevel;
-use util\log\LoggingEvent;
-use util\log\SyslogUdpAppender;
+use util\log\{LogLevel, LoggingEvent, SyslogUdpAppender};
 use util\log\layout\PatternLayout;
 
 class SyslogUdpAppenderTest extends TestCase {

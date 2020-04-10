@@ -3,10 +3,7 @@
 use io\streams\MemoryOutputStream;
 use unittest\TestCase;
 use util\cmd\Console;
-use util\log\ConsoleAppender;
-use util\log\Layout;
-use util\log\LogCategory;
-use util\log\LoggingEvent;
+use util\log\{ConsoleAppender, Layout, LogCategory, LoggingEvent};
 
 /**
  * TestCase

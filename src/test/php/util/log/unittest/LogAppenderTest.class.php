@@ -1,11 +1,9 @@
 <?php namespace util\log\unittest;
 
 use unittest\TestCase;
-use util\log\Appender;
-use util\log\LogCategory;
-use util\log\LoggingEvent;
-use util\log\layout\PatternLayout;
 use util\collections\Vector;
+use util\log\{Appender, LogCategory, LoggingEvent};
+use util\log\layout\PatternLayout;
 
 class LogAppenderTest extends TestCase {
   private $fixture, $events;

@@ -1,9 +1,7 @@
 <?php namespace util\log\unittest;
 
 use unittest\TestCase;
-use util\log\Appender;
-use util\log\LoggingEvent;
-use util\log\LogCategory;
+use util\log\{Appender, LogCategory, LoggingEvent};
 
 abstract class AppenderTest extends TestCase {
 

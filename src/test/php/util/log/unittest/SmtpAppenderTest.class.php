@@ -1,7 +1,6 @@
 <?php namespace util\log\unittest;
 
-use util\log\SmtpAppender;
-use util\log\LogLevel;
+use util\log\{LogLevel, SmtpAppender};
 use util\log\layout\PatternLayout;
 
 class SmtpAppenderTest extends AppenderTest {

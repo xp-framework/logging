@@ -1,14 +1,9 @@
 <?php namespace util\log\unittest;
 
-use io\streams\MemoryOutputStream;
-use io\streams\StringWriter;
+use io\streams\{MemoryOutputStream, StringWriter};
 use unittest\TestCase;
 use util\cmd\Console;
-use util\log\ColoredConsoleAppender;
-use util\log\Layout;
-use util\log\LogCategory;
-use util\log\LogLevel;
-use util\log\LoggingEvent;
+use util\log\{ColoredConsoleAppender, Layout, LogCategory, LogLevel, LoggingEvent};
 
 class ColoredConsoleAppenderTest extends TestCase {
 

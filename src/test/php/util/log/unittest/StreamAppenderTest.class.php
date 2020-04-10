@@ -1,10 +1,9 @@
 <?php namespace util\log\unittest;
 
-use unittest\TestCase;
-use util\log\StreamAppender;
-use util\log\LogCategory;
-use util\log\layout\PatternLayout;
 use io\streams\MemoryOutputStream;
+use unittest\TestCase;
+use util\log\{LogCategory, StreamAppender};
+use util\log\layout\PatternLayout;
 
 class StreamAppenderTest extends TestCase {
   private $out, $cat;

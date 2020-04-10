@@ -1,8 +1,8 @@
 <?php namespace util\log;
 
-use util\log\layout\DefaultLayout;
 use lang\Value;
 use util\Objects;
+use util\log\layout\DefaultLayout;
 
 /**
  * The log category is the interface to be used. All logging information

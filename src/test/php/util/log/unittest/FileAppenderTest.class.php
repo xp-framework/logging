@@ -1,10 +1,8 @@
 <?php namespace util\log\unittest;
 
-use util\log\FileAppender;
-use io\streams\Streams;
-use io\streams\MemoryOutputStream;
+use io\streams\{MemoryOutputStream, Streams};
+use util\log\{FileAppender, LogLevel};
 use util\log\layout\PatternLayout;
-use util\log\LogLevel;
 
 /**
  * TestCase for FileAppender

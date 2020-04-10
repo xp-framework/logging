@@ -1,18 +1,10 @@
 <?php namespace util\log\unittest;
 
 use io\streams\MemoryInputStream;
-use lang\ClassLoader;
-use lang\FormatException;
-use lang\IllegalArgumentException;
+use lang\{ClassLoader, FormatException, IllegalArgumentException};
 use unittest\TestCase;
-use util\Objects;
-use util\Properties;
-use util\log\Appender;
-use util\log\ConsoleAppender;
-use util\log\FileAppender;
-use util\log\LogConfiguration;
-use util\log\LogLevel;
-use util\log\LoggingEvent;
+use util\{Objects, Properties};
+use util\log\{Appender, ConsoleAppender, FileAppender, LogConfiguration, LogLevel, LoggingEvent};
 use util\log\layout\PatternLayout;
 
 class LogConfigurationTest extends TestCase {

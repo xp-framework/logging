@@ -1,15 +1,8 @@
 <?php namespace util\log\unittest;
 
-use io\File;
-use io\Path;
+use io\{File, Path};
 use util\cmd\Console;
-use util\log\ColoredConsoleAppender;
-use util\log\ConsoleAppender;
-use util\log\FileAppender;
-use util\log\LogCategory;
-use util\log\LogLevel;
-use util\log\Logging;
-use util\log\SyslogAppender;
+use util\log\{ColoredConsoleAppender, ConsoleAppender, FileAppender, LogCategory, LogLevel, Logging, SyslogAppender};
 use util\log\layout\PatternLayout;
 
 class LoggingTest extends \unittest\TestCase {

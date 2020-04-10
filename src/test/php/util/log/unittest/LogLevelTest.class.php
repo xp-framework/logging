@@ -1,7 +1,7 @@
 <?php namespace util\log\unittest;
 
-use util\log\LogLevel;
 use lang\IllegalArgumentException;
+use util\log\LogLevel;
 
 class LogLevelTest extends \unittest\TestCase {
 
