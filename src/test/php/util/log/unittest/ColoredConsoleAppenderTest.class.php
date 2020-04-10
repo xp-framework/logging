@@ -43,10 +43,10 @@ class ColoredConsoleAppenderTest extends TestCase {
     $this->assertEquals('00;30', (new ColoredConsoleAppender('out', [LogLevel::INFO => '00;30']))->colors()[LogLevel::INFO]);
   }
 
-  #[@test, @values(map = [
+  #[@test, @values(['map' => [
   #  'out' => Console::$out,
   #  'err' => Console::$err,
-  #])]
+  #]])]
   public function writes_to($param, $writer) {
     $this->assertEquals($writer, (new ColoredConsoleAppender($param))->writer());
   }

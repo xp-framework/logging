@@ -1,7 +1,12 @@
-s Logging change log
+Logging change log
 ==================
 
 ## ?.?.? / ????-??-??
+
+## 9.1.4 / 2020-04-10
+
+* Implemented RFC #335: Remove deprecated key/value pair annotation syntax
+  (@thekid)
 
 ## 9.1.3 / 2019-12-01
 
