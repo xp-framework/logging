@@ -1,6 +1,6 @@
 <?php namespace util\log\unittest;
 
-use unittest\TestCase;
+use unittest\{Test, TestCase};
 use util\log\context\NestedLogContext;
 
 class NestedLogContextTest extends TestCase {
@@ -11,7 +11,7 @@ class NestedLogContextTest extends TestCase {
     $this->context= new NestedLogContext();
   }
 
-  #[@test]
+  #[Test]
   public function getDepth() {
     $this->assertEquals(0, $this->context->getDepth());
     $this->context->push('val1');
@@ -21,7 +21,7 @@ class NestedLogContextTest extends TestCase {
     $this->assertEquals(2, $this->context->getDepth());
   }
 
-  #[@test]
+  #[Test]
   public function pop() {
     $this->assertNull($this->context->pop());
     $this->context->push('val1');
@@ -30,7 +30,7 @@ class NestedLogContextTest extends TestCase {
     $this->assertEquals('val1', $this->context->pop());
   }
 
-  #[@test]
+  #[Test]
   public function peek() {
     $this->assertNull($this->context->peek());
     $this->context->push('val1');
@@ -39,7 +39,7 @@ class NestedLogContextTest extends TestCase {
     $this->assertEquals('val2', $this->context->peek());
   }
 
-  #[@test]
+  #[Test]
   public function clear() {
     $this->context->push('val1');
     $this->context->push('val2');
@@ -48,7 +48,7 @@ class NestedLogContextTest extends TestCase {
     $this->assertEquals(0, $this->context->getDepth());
   }
 
-  #[@test]
+  #[Test]
   public function format() {
     $this->assertEquals('', $this->context->format());
     $this->context->push('val1');
@@ -56,7 +56,7 @@ class NestedLogContextTest extends TestCase {
     $this->assertEquals('val1 val2', $this->context->format());
   }
 
-  #[@test]
+  #[Test]
   public function toStringTest() {
     $this->assertEquals('util.log.context.NestedLogContext{}', $this->context->toString());
     $this->context->push('val1');

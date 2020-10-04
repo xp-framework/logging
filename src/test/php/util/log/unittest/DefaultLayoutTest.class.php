@@ -1,9 +1,9 @@
 <?php namespace util\log\unittest;
 
 use lang\Value;
-use unittest\TestCase;
-use util\log\{LogCategory, LogLevel, LoggingEvent};
+use unittest\{Test, TestCase};
 use util\log\layout\DefaultLayout;
+use util\log\{LogCategory, LogLevel, LoggingEvent};
 
 class DefaultLayoutTest extends \unittest\TestCase {
   private $fixture, $tz;
@@ -31,7 +31,7 @@ class DefaultLayoutTest extends \unittest\TestCase {
     return new LoggingEvent(new LogCategory('test'), 0, 0, $level, $args);
   }
 
-  #[@test]
+  #[Test]
   public function debug() {
     $this->assertEquals(
       "[01:00:00     0 debug] Test\n",
@@ -39,7 +39,7 @@ class DefaultLayoutTest extends \unittest\TestCase {
     );
   }
 
-  #[@test]
+  #[Test]
   public function info() {
     $this->assertEquals(
       "[01:00:00     0  info] Test\n",
@@ -47,7 +47,7 @@ class DefaultLayoutTest extends \unittest\TestCase {
     );
   }
 
-  #[@test]
+  #[Test]
   public function warn() {
     $this->assertEquals(
       "[01:00:00     0  warn] Test\n",
@@ -55,7 +55,7 @@ class DefaultLayoutTest extends \unittest\TestCase {
     );
   }
 
-  #[@test]
+  #[Test]
   public function error() {
     $this->assertEquals(
       "[01:00:00     0 error] Test\n",

@@ -1,7 +1,7 @@
 <?php namespace util\log\unittest;
 
 use io\streams\MemoryOutputStream;
-use unittest\TestCase;
+use unittest\{Test, TestCase, Values};
 use util\cmd\Console;
 use util\log\{ConsoleAppender, Layout, LogCategory, LoggingEvent};
 
@@ -29,22 +29,22 @@ class ConsoleAppenderTest extends TestCase {
     );
   }
 
-  #[@test]
+  #[Test]
   public function can_create() {
     new ConsoleAppender();
   }
 
-  #[@test, @values(['out', 'err', Console::$out, Console::$err])]
+  #[Test, Values(eval: '["out", "err", Console::$out, Console::$err]')]
   public function can_create_with($target) {
     new ConsoleAppender($target);
   }
 
-  #[@test]
+  #[Test]
   public function writes_to_stdout_by_default() {
     $this->assertEquals(Console::$out, (new ConsoleAppender())->writer());
   }
 
-  #[@test]
+  #[Test]
   public function append_to_stderr() {
     $stream= new MemoryOutputStream();
 
@@ -59,7 +59,7 @@ class ConsoleAppenderTest extends TestCase {
     }
   }
 
-  #[@test]
+  #[Test]
   public function append_to_stdout() {
     $stream= new MemoryOutputStream();
 
