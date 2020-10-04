@@ -1,9 +1,9 @@
 <?php namespace util\log\unittest;
 
 use io\streams\MemoryOutputStream;
-use unittest\TestCase;
-use util\log\{LogCategory, StreamAppender};
+use unittest\{Test, TestCase};
 use util\log\layout\PatternLayout;
+use util\log\{LogCategory, StreamAppender};
 
 class StreamAppenderTest extends TestCase {
   private $out, $cat;
@@ -19,27 +19,27 @@ class StreamAppenderTest extends TestCase {
     );
   }
   
-  #[@test]
+  #[Test]
   public function debug() {
     $this->cat->debug('Hello');
-    $this->assertEquals("debug: Hello\n", $this->out->getBytes());
+    $this->assertEquals("debug: Hello\n", $this->out->bytes());
   }
  
-  #[@test]
+  #[Test]
   public function info() {
     $this->cat->info('Hello');
-    $this->assertEquals("info: Hello\n", $this->out->getBytes());
+    $this->assertEquals("info: Hello\n", $this->out->bytes());
   }
 
-  #[@test]
+  #[Test]
   public function warn() {
     $this->cat->warn('Hello');
-    $this->assertEquals("warn: Hello\n", $this->out->getBytes());
+    $this->assertEquals("warn: Hello\n", $this->out->bytes());
   }
 
-  #[@test]
+  #[Test]
   public function error() {
     $this->cat->error('Hello');
-    $this->assertEquals("error: Hello\n", $this->out->getBytes());
+    $this->assertEquals("error: Hello\n", $this->out->bytes());
   }
 }

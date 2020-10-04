@@ -2,10 +2,10 @@
 
 use io\streams\MemoryInputStream;
 use lang\{ClassLoader, FormatException, IllegalArgumentException};
-use unittest\TestCase;
-use util\{Objects, Properties};
-use util\log\{Appender, ConsoleAppender, FileAppender, LogConfiguration, LogLevel, LoggingEvent};
+use unittest\{Expect, Test, TestCase, Values};
 use util\log\layout\PatternLayout;
+use util\log\{Appender, ConsoleAppender, FileAppender, LogConfiguration, LogLevel, LoggingEvent};
+use util\{Objects, Properties};
 
 class LogConfigurationTest extends TestCase {
 
@@ -21,18 +21,18 @@ class LogConfigurationTest extends TestCase {
     return $p;
   }
 
-  #[@test]
+  #[Test]
   public function can_create() {
     new LogConfiguration($this->properties(''));
   }
 
-  #[@test]
+  #[Test]
   public function categories_for_empty_file() {
     $config= new LogConfiguration($this->properties(''));
     $this->assertEquals([], $config->categories());
   }
 
-  #[@test]
+  #[Test]
   public function categories() {
     $config= new LogConfiguration($this->properties('
       [default]
@@ -42,10 +42,7 @@ class LogConfigurationTest extends TestCase {
     $this->assertInstanceOf('[:util.log.LogCategory]', $config->categories());
   }
 
-  #[@test, @values([
-  #  ['default', true],
-  #  ['files', false],
-  #])]
+  #[Test, Values([['default', true], ['files', false],])]
   public function provides($name, $expected) {
     $config= new LogConfiguration($this->properties('
       [default]
@@ -54,7 +51,7 @@ class LogConfigurationTest extends TestCase {
     $this->assertEquals($expected, $config->provides($name));
   }
 
-  #[@test]
+  #[Test]
   public function appender_configured_via_class() {
     $config= new LogConfiguration($this->properties('
       [default]
@@ -65,7 +62,7 @@ class LogConfigurationTest extends TestCase {
     $this->assertEquals(1, sizeof($appenders), Objects::stringOf($appenders));
   }
 
-  #[@test]
+  #[Test]
   public function appenders_referenced_via_uses() {
     $config= new LogConfiguration($this->properties('
       [default]
@@ -83,7 +80,7 @@ class LogConfigurationTest extends TestCase {
     $this->assertEquals(2, sizeof($appenders), Objects::stringOf($appenders));
   }
 
-  #[@test]
+  #[Test]
   public function uses_can_be_nested() {
     $config= new LogConfiguration($this->properties('
       [default]
@@ -105,10 +102,7 @@ class LogConfigurationTest extends TestCase {
     $this->assertEquals(3, sizeof($appenders), Objects::stringOf($appenders));
   }
 
-  #[@test, @expect(
-  #  class= FormatException::class,
-  #  withMessage= 'Uses in section "default" references non-existant section "missing"'
-  #)]
+  #[Test, Expect(class: FormatException::class, withMessage: 'Uses in section "default" references non-existant section "missing"')]
   public function uses_referencing_non_existant_section() {
     new LogConfiguration($this->properties('
       [default]
@@ -119,10 +113,7 @@ class LogConfigurationTest extends TestCase {
     '));
   }
 
-  #[@test, @expect(
-  #  class= FormatException::class,
-  #  withMessage= 'Class util.log.NonExistantAppender in section "default" cannot be instantiated'
-  #)]
+  #[Test, Expect(class: FormatException::class, withMessage: 'Class util.log.NonExistantAppender in section "default" cannot be instantiated')]
   public function non_existant_appender() {
     new LogConfiguration($this->properties('
       [default]
@@ -130,10 +121,7 @@ class LogConfigurationTest extends TestCase {
     '));
   }
 
-  #[@test, @expect(
-  #  class= FormatException::class,
-  #  withMessage= 'Class util.log.ConsoleAppender in section "default" cannot be instantiated'
-  #)]
+  #[Test, Expect(class: FormatException::class, withMessage: 'Class util.log.ConsoleAppender in section "default" cannot be instantiated')]
   public function exceptions_when_instantiating_appenders() {
     new LogConfiguration($this->properties('
       [default]
@@ -142,10 +130,7 @@ class LogConfigurationTest extends TestCase {
     '));
   }
 
-  #[@test, @expect(
-  #  class= FormatException::class,
-  #  withMessage= 'Level TEST in section "default" not recognized'
-  #)]
+  #[Test, Expect(class: FormatException::class, withMessage: 'Level TEST in section "default" not recognized')]
   public function non_existant_level() {
     new LogConfiguration($this->properties('
       [default]
@@ -154,16 +139,13 @@ class LogConfigurationTest extends TestCase {
     '));
   }
 
-  #[@test, @expect(
-  #  class= IllegalArgumentException::class,
-  #  withMessage= 'No log category "default"'
-  #)]
+  #[Test, Expect(class: IllegalArgumentException::class, withMessage: 'No log category "default"')]
   public function missing_category() {
     $config= new LogConfiguration($this->properties(''));
     $config->category('default');
   }
 
-  #[@test]
+  #[Test]
   public function category_with_class_and_argument() {
     $config= new LogConfiguration($this->properties('
       [default]
@@ -175,7 +157,7 @@ class LogConfigurationTest extends TestCase {
     $this->assertEquals('test.log', $appenders[0]->filename);
   }
 
-  #[@test]
+  #[Test]
   public function category_with_class_and_array_argument() {
     $config= new LogConfiguration($this->properties('
       [default]
@@ -187,7 +169,7 @@ class LogConfigurationTest extends TestCase {
     $this->assertEquals('test.log', $appenders[0]->filename);
   }
 
-  #[@test, @expect(FormatException::class)]
+  #[Test, Expect(FormatException::class)]
   public function category_with_class_and_missing_argument() {
     ClassLoader::defineClass('util.log.unittest.LogConfigurationTest_Appender', Appender::class, [], [
       '__construct' => function($arg) { /* ... */ },
@@ -201,7 +183,7 @@ class LogConfigurationTest extends TestCase {
     $config->category('default')->getAppenders();
   }
 
-  #[@test]
+  #[Test]
   public function category_with_class_and_named_argument() {
     $config= new LogConfiguration($this->properties('
       [default]
@@ -213,7 +195,7 @@ class LogConfigurationTest extends TestCase {
     $this->assertEquals('test.log', $appenders[0]->filename);
   }
 
-  #[@test]
+  #[Test]
   public function category_with_class_and_named_arguments() {
     $config= new LogConfiguration($this->properties('
       [default]
@@ -226,7 +208,7 @@ class LogConfigurationTest extends TestCase {
     $this->assertEquals('127.0.0.1:514', $appenders[0]->ip.':'.$appenders[0]->port);
   }
 
-  #[@test, @expect(FormatException::class)]
+  #[Test, Expect(FormatException::class)]
   public function category_with_non_existant_named_argument() {
     $config= new LogConfiguration($this->properties('
       [default]
@@ -237,7 +219,7 @@ class LogConfigurationTest extends TestCase {
     $config->category('default')->getAppenders();
   }
 
-  #[@test]
+  #[Test]
   public function categories_with_loglevels() {
     $config= new LogConfiguration($this->properties('
       [default]
@@ -258,7 +240,7 @@ class LogConfigurationTest extends TestCase {
     $this->assertInstanceOf(FileAppender::class, $cat->getAppenders(LogLevel::ERROR)[0]);
   }
 
-  #[@test]
+  #[Test]
   public function category_with_class_and_layout() {
     $config= new LogConfiguration($this->properties('
       [default]
@@ -270,7 +252,7 @@ class LogConfigurationTest extends TestCase {
     $this->assertEquals(new PatternLayout('%c - %m'), $appenders[0]->getLayout());
   }
 
-  #[@test, @expect(FormatException::class)]
+  #[Test, Expect(FormatException::class)]
   public function category_with_class_and_non_existant_layout() {
     $config= new LogConfiguration($this->properties('
       [default]

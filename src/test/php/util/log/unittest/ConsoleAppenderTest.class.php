@@ -1,7 +1,7 @@
 <?php namespace util\log\unittest;
 
 use io\streams\MemoryOutputStream;
-use unittest\TestCase;
+use unittest\{Test, TestCase, Values};
 use util\cmd\Console;
 use util\log\{ConsoleAppender, Layout, LogCategory, LoggingEvent};
 
@@ -29,48 +29,48 @@ class ConsoleAppenderTest extends TestCase {
     );
   }
 
-  #[@test]
+  #[Test]
   public function can_create() {
     new ConsoleAppender();
   }
 
-  #[@test, @values(['out', 'err', Console::$out, Console::$err])]
+  #[Test, Values(eval: '["out", "err", Console::$out, Console::$err]')]
   public function can_create_with($target) {
     new ConsoleAppender($target);
   }
 
-  #[@test]
+  #[Test]
   public function writes_to_stdout_by_default() {
     $this->assertEquals(Console::$out, (new ConsoleAppender())->writer());
   }
 
-  #[@test]
+  #[Test]
   public function append_to_stderr() {
     $stream= new MemoryOutputStream();
 
-    $err= Console::$err->getStream();
-    Console::$err->setStream($stream);
+    $err= Console::$err->stream();
+    Console::$err->redirect($stream);
 
     try {
       $this->category('err')->warn('Test');
-      $this->assertEquals('[LOG] Test', $stream->getBytes());
+      $this->assertEquals('[LOG] Test', $stream->bytes());
     } finally {
-      Console::$err->setStream($err);
+      Console::$err->redirect($err);
     }
   }
 
-  #[@test]
+  #[Test]
   public function append_to_stdout() {
     $stream= new MemoryOutputStream();
 
-    $out= Console::$out->getStream();
-    Console::$out->setStream($stream);
+    $out= Console::$out->stream();
+    Console::$out->redirect($stream);
 
     try {
       $this->category('out')->warn('Test');
-      $this->assertEquals('[LOG] Test', $stream->getBytes());
+      $this->assertEquals('[LOG] Test', $stream->bytes());
     } finally {
-      Console::$out->setStream($out);
+      Console::$out->redirect($out);
     }
   }
 }

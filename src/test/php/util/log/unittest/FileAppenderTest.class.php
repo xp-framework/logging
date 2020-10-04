@@ -1,8 +1,9 @@
 <?php namespace util\log\unittest;
 
 use io\streams\{MemoryOutputStream, Streams};
-use util\log\{FileAppender, LogLevel};
+use unittest\{BeforeClass, Test};
 use util\log\layout\PatternLayout;
+use util\log\{FileAppender, LogLevel};
 
 /**
  * TestCase for FileAppender
@@ -15,7 +16,7 @@ class FileAppenderTest extends AppenderTest {
   /**
    * Defines stream wrapper
    */
-  #[@beforeClass]
+  #[BeforeClass]
   public static function registerStreamWrapper() {
     stream_wrapper_register('mem', MemoryMapped::class);
   }
@@ -48,7 +49,7 @@ class FileAppenderTest extends AppenderTest {
     return (new FileAppender('mem://'.$this->name))->withLayout(new PatternLayout("[%l] %m\n"));
   }
 
-  #[@test]
+  #[Test]
   public function append_one_message() {
     $fixture= $this->newFixture();
     $fixture->append($this->newEvent(LogLevel::WARN, 'Test'));
@@ -58,7 +59,7 @@ class FileAppenderTest extends AppenderTest {
     );
   }
 
-  #[@test]
+  #[Test]
   public function append_two_messages() {
     $fixture= $this->newFixture();
     $fixture->append($this->newEvent(LogLevel::WARN, 'Test'));
@@ -69,7 +70,7 @@ class FileAppenderTest extends AppenderTest {
     );
   }
 
-  #[@test]
+  #[Test]
   public function chmod_called_when_perms_given() {
     $fixture= $this->newFixture();
     $fixture->perms= '0640';  // -rw-r-----
@@ -77,14 +78,14 @@ class FileAppenderTest extends AppenderTest {
     $this->assertEquals(0640, fileperms($fixture->filename));
   }
 
-  #[@test]
+  #[Test]
   public function chmod_not_called_without_initializing_perms() {
     $fixture= $this->newFixture();
     $fixture->append($this->newEvent(LogLevel::WARN, 'Test'));
     $this->assertEquals(0666, fileperms($fixture->filename));
   }
 
-  #[@test]
+  #[Test]
   public function filename_syncs_with_time() {
     $fixture= newinstance(FileAppender::class, ['mem://fn%H'], '{
       protected $hour= 0;
@@ -103,7 +104,7 @@ class FileAppenderTest extends AppenderTest {
     );
   }
 
-  #[@test]
+  #[Test]
   public function filename_does_not_sync_with_time() {
     $fixture= $this->newFixture();
     $fixture->filename= 'mem://file-%H:%M:%I:%S';

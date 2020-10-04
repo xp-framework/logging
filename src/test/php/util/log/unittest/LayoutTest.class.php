@@ -1,7 +1,7 @@
 <?php namespace util\log\unittest;
 
 use lang\Value;
-use unittest\TestCase;
+use unittest\{Test, TestCase, Values};
 use util\log\{Layout, LogCategory, LogLevel, LoggingEvent};
 
 class LayoutTest extends TestCase {
@@ -38,14 +38,7 @@ class LayoutTest extends TestCase {
     return new LoggingEvent(new LogCategory('test'), 0, 0, $level, $args);
   }
 
-  #[@test, @values([
-  #  [null, 'null'],
-  #  [true, 'true'],
-  #  [false, 'false'],
-  #  [1, '1'],
-  #  [1.5, '1.5'],
-  #  ['Test', 'Test'],
-  #])]
+  #[Test, Values([[null, 'null'], [true, 'true'], [false, 'false'], [1, '1'], [1.5, '1.5'], ['Test', 'Test'],])]
   public function formatting_scalars($value, $expected) {
     $this->assertEquals(
       '[log] '.$expected,
@@ -53,12 +46,7 @@ class LayoutTest extends TestCase {
     );
   }
 
-  #[@test, @values([
-  #  [[], '[]'],
-  #  [[1], '[1]'],
-  #  [[1, 2, 3], '[1, 2, 3]'],
-  #  [[[1]], '[[1]]'],
-  #])]
+  #[Test, Values([[[], '[]'], [[1], '[1]'], [[1, 2, 3], '[1, 2, 3]'], [[[1]], '[[1]]'],])]
   public function formatting_arrays($value, $expected) {
     $this->assertEquals(
       '[log] '.$expected,
@@ -66,7 +54,7 @@ class LayoutTest extends TestCase {
     );
   }
 
-  #[@test]
+  #[Test]
   public function formatting_map() {
     $this->assertEquals(
       "[log] [\n  key => \"value\"\n]",
@@ -74,7 +62,7 @@ class LayoutTest extends TestCase {
     );
   }
 
-  #[@test]
+  #[Test]
   public function formatting_object() {
     $this->assertEquals(
       "[log] stdClass@{\n  key => \"value\"\n}",
@@ -82,7 +70,7 @@ class LayoutTest extends TestCase {
     );
   }
 
-  #[@test]
+  #[Test]
   public function formatting_function() {
     $this->assertEquals(
       '[log] Test',
@@ -90,7 +78,7 @@ class LayoutTest extends TestCase {
     );
   }
 
-  #[@test]
+  #[Test]
   public function formatting_value() {
     $this->assertEquals(
       '[log] Test',

@@ -1,6 +1,6 @@
 <?php namespace util\log\unittest;
 
-use unittest\TestCase;
+use unittest\{Test, TestCase, Values};
 use util\log\layout\PatternLayout;
 use util\log\{LogLevel, LoggingEvent, SyslogUdpAppender};
 
@@ -31,31 +31,31 @@ class SyslogUdpAppenderTest extends TestCase {
     yield [LogLevel::NONE,  LOG_USER + LOG_NOTICE];
   }
 
-  #[@test]
+  #[Test]
   public function identifier_defaults_to_php_self() {
     $fixture= new SyslogUdpAppender('127.0.0.1', 514, null, LOG_USER);
     $this->assertEquals(basename($_SERVER['PHP_SELF']), $fixture->identifier);
   }
 
-  #[@test]
+  #[Test]
   public function identifier_can_be_set() {
     $fixture= new SyslogUdpAppender('127.0.0.1', 514, 'test-identifier', LOG_USER);
     $this->assertEquals('test-identifier', $fixture->identifier);
   }
 
-  #[@test]
+  #[Test]
   public function hostname_defaults_to_gethostname() {
     $fixture= new SyslogUdpAppender('127.0.0.1', 514, null, LOG_USER);
     $this->assertEquals(gethostname(), $fixture->hostname);
   }
 
-  #[@test]
+  #[Test]
   public function hostname_can_be_set() {
     $fixture= new SyslogUdpAppender('127.0.0.1', 514, null, LOG_USER, 'test-host');
     $this->assertEquals('test-host', $fixture->hostname);
   }
 
-  #[@test, @values('levels')]
+  #[Test, Values('levels')]
   public function formatting($level, $priority) {
     $message= 'BOM\'su root\' failed for lonvick on /dev/pts/8';
 
@@ -68,7 +68,7 @@ class SyslogUdpAppenderTest extends TestCase {
     );
   }
 
-  #[@test]
+  #[Test]
   public function message_is_cut_when_maximum_length_is_reached() {
     $message= str_repeat('*', SyslogUdpAppender::DATAGRAM_MAX_LENGTH + 1);
 

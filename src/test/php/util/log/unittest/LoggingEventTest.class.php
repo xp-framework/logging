@@ -1,5 +1,6 @@
 <?php namespace util\log\unittest;
 
+use unittest\Test;
 use util\log\{LogCategory, LogLevel, LoggingEvent};
 
 class LoggingEventTest extends \unittest\TestCase {
@@ -16,27 +17,27 @@ class LoggingEventTest extends \unittest\TestCase {
     );
   }
 
-  #[@test]
+  #[Test]
   public function getCategory() {
     $this->assertEquals(new LogCategory('default', null, null, 0), $this->fixture->getCategory());
   }
  
-  #[@test]
+  #[Test]
   public function getTimestamp() {
     $this->assertEquals(1258733284, $this->fixture->getTimestamp());
   }
 
-  #[@test]
+  #[Test]
   public function getProcessId() {
     $this->assertEquals(1, $this->fixture->getProcessId());
   }
 
-  #[@test]
+  #[Test]
   public function getLevel() {
     $this->assertEquals(LogLevel::INFO, $this->fixture->getLevel());
   }
 
-  #[@test]
+  #[Test]
   public function getArguments() {
     $this->assertEquals(['Hello'], $this->fixture->getArguments());
   }

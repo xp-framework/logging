@@ -1,17 +1,17 @@
 <?php namespace util\log\unittest;
 
-use unittest\TestCase;
+use unittest\{Test, TestCase};
 use util\Observable;
 use util\log\{LogCategory, LogObserver};
 
 class LogObserverTest extends TestCase {
 
-  #[@test]
+  #[Test]
   public function can_create() {
     new LogObserver(new LogCategory('test'));
   }
 
-  #[@test]
+  #[Test]
   public function update_calls_debug() {
     $called= [];
     $l= new LogObserver(newinstance(LogCategory::class, ['test'], [
