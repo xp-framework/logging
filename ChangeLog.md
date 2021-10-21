@@ -5,6 +5,9 @@ Logging change log
 
 ## 11.0.0 / 2021-10-21
 
+* Made compatible with PHP 8.1 by replacing calls to the now-deprecated
+  `strftime()` function
+  (@thekid)
 * Implemented xp-framework/rfc#341, dropping compatibility with XP 9
   (@thekid)
 

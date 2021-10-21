@@ -41,7 +41,50 @@ class FileAppender extends Appender {
    * @return string
    */
   public function filename($ref= null) {
-    $formatted= null === $ref ? strftime($this->filename) : strftime($this->filename, $ref);
+    static $replace= [
+      'd' => 'd',
+      'm' => 'm',
+      'Y' => 'Y',
+      'H' => 'H',
+      'S' => 's',
+      'w' => 'w',
+      'G' => 'o',
+      'D' => 'm/d/Y',
+      'T' => 'H:i:s',
+      'z' => 'O',
+      'Z' => 'e',
+      'G' => 'o',
+      'V' => 'W',
+      'C' => 'y',
+      'e' => 'j',
+      'G' => 'o',
+      'H' => 'H',
+      'I' => 'h',
+      'j' => 'z',
+      'M' => 'i',
+      'r' => 'h:i:sa',
+      'R' => 'H:i:s',
+      'u' => 'N',
+      'V' => 'W',
+      'W' => 'W',
+      'w' => 'w',
+      'y' => 'y',
+      'Z' => 'O',
+      't' => "\t",
+      'n' => "\n",
+      '%' => '%'
+    ];
+
+    // Replacement for strftime(), which has been deprecated in PHP 8.1
+    $o= 0;
+    $l= strlen($this->filename);
+    $formatted= '';
+    do {
+      $p= strcspn($this->filename, '%', $o);
+      $formatted.= substr($this->filename, $o, $p - $o);
+      $o+= $p + 1;
+    } while ($o < $l && $formatted.= date($replace[$this->filename[$o]], $ref));
+
     if (!$this->syncDate) {
       $this->filename= $formatted;
     }
