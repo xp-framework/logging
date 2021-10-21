@@ -12,17 +12,13 @@
  * @test xp://util.log.unittest.ColoredConsoleAppenderTest
  */  
 class ColoredConsoleAppender extends ConsoleAppender {
-  private static $DEFAULTS;
+  private static $DEFAULTS= [
+    LogLevel::INFO  => '00;00',
+    LogLevel::WARN  => '00;31',
+    LogLevel::ERROR => '01;31',
+    LogLevel::DEBUG => '00;34'
+  ];
   protected $colors= [];
-
-  static function __static() {
-    self::$DEFAULTS= [
-      LogLevel::INFO  => '00;00',
-      LogLevel::WARN  => '00;31',
-      LogLevel::ERROR => '01;31',
-      LogLevel::DEBUG => '00;34'
-    ];
-  }
 
   /**
    * Constructor
