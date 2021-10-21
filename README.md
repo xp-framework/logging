@@ -1,10 +1,11 @@
 Logging
 =======
 
-[![Build Status on TravisCI](https://secure.travis-ci.org/xp-framework/logging.svg)](http://travis-ci.org/xp-framework/logging)
+[![Build status on GitHub](https://github.com/xp-framework/logging/workflows/Tests/badge.svg)](https://github.com/xp-framework/logging/actions)
 [![XP Framework Module](https://raw.githubusercontent.com/xp-framework/web/master/static/xp-framework-badge.png)](https://github.com/xp-framework/core)
 [![BSD Licence](https://raw.githubusercontent.com/xp-framework/web/master/static/licence-bsd.png)](https://github.com/xp-framework/core/blob/master/LICENCE.md)
-[![Requitres PHP 7.0+](https://raw.githubusercontent.com/xp-framework/web/master/static/php-7_0plus.png)](http://php.net/)
+[![Requires PHP 7.0+](https://raw.githubusercontent.com/xp-framework/web/master/static/php-7_0plus.svg)](http://php.net/)
+[![Supports PHP 8.0+](https://raw.githubusercontent.com/xp-framework/web/master/static/php-8_0plus.svg)](http://php.net/)
 [![Latest Stable Version](https://poser.pugx.org/xp-framework/logging/version.png)](https://packagist.org/packages/xp-framework/logging)
 
 Logging for the XP Framework.
@@ -14,15 +15,15 @@ Example
 
 ```php
 use util\log\Logging;
-use util\ServiceNotAvailableException;
 use lang\Throwable;
+use peer\ConnectException;
 
 $logger= Logging::named('service')->toConsole();
 $logger->info('Starting application');
 
 try {
   $service->operation();
-} catch (ServiceNotAvailableException $e) {
+} catch (ConnectException $e) {
   $logger->warn('Service not available', $e);
 } catch (Throwable $t) {
   $logger->error('Error during service invocation', $t);
