@@ -1,10 +1,11 @@
 <?php namespace util\log\unittest;
 
-use unittest\{Test, TestCase, Values};
+use test\Assert;
+use test\{Test, TestCase, Values};
 use util\log\layout\PatternLayout;
 use util\log\{LogLevel, LoggingEvent, SyslogUdpAppender};
 
-class SyslogUdpAppenderTest extends TestCase {
+class SyslogUdpAppenderTest {
 
   /**
    * Creates new Syslog UDP appender fixture
@@ -34,35 +35,35 @@ class SyslogUdpAppenderTest extends TestCase {
   #[Test]
   public function identifier_defaults_to_php_self() {
     $fixture= new SyslogUdpAppender('127.0.0.1', 514, null, LOG_USER);
-    $this->assertEquals(basename($_SERVER['PHP_SELF']), $fixture->identifier);
+    Assert::equals(basename($_SERVER['PHP_SELF']), $fixture->identifier);
   }
 
   #[Test]
   public function identifier_can_be_set() {
     $fixture= new SyslogUdpAppender('127.0.0.1', 514, 'test-identifier', LOG_USER);
-    $this->assertEquals('test-identifier', $fixture->identifier);
+    Assert::equals('test-identifier', $fixture->identifier);
   }
 
   #[Test]
   public function hostname_defaults_to_gethostname() {
     $fixture= new SyslogUdpAppender('127.0.0.1', 514, null, LOG_USER);
-    $this->assertEquals(gethostname(), $fixture->hostname);
+    Assert::equals(gethostname(), $fixture->hostname);
   }
 
   #[Test]
   public function hostname_can_be_set() {
     $fixture= new SyslogUdpAppender('127.0.0.1', 514, null, LOG_USER, 'test-host');
-    $this->assertEquals('test-host', $fixture->hostname);
+    Assert::equals('test-host', $fixture->hostname);
   }
 
-  #[Test, Values('levels')]
+  #[Test, Values(from: 'levels')]
   public function formatting($level, $priority) {
     $message= 'BOM\'su root\' failed for lonvick on /dev/pts/8';
 
     $appender= $this->newFixture('su', '2003-10-11T22:14:15.003Z');
     $appender->append(new LoggingEvent('testCat', time(), 1234, $level, [$message]));
 
-    $this->assertEquals(
+    Assert::equals(
       '<'.$priority.'>1 2003-10-11T22:14:15.003Z '.gethostname().' su '.getmypid().' - - '.$message,
       $appender->lastBuffer
     );
@@ -75,6 +76,6 @@ class SyslogUdpAppenderTest extends TestCase {
     $appender= $this->newFixture('su', '2003-10-11T22:14:15.003Z');
     $appender->append(new LoggingEvent('testCat', time(), 1234, LogLevel::ERROR, [$message]));
 
-    $this->assertEquals(SyslogUdpAppender::DATAGRAM_MAX_LENGTH, strlen($appender->lastBuffer));
+    Assert::equals(SyslogUdpAppender::DATAGRAM_MAX_LENGTH, strlen($appender->lastBuffer));
   }
 }

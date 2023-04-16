@@ -1,6 +1,7 @@
 <?php namespace util\log\unittest;
 
-use unittest\Test;
+use test\Assert;
+use test\Test;
 use util\log\BufferedAppender;
 use util\log\layout\PatternLayout;
 
@@ -17,14 +18,14 @@ class BufferedAppenderTest extends AppenderTest {
 
   #[Test]
   public function buffer_initially_empty() {
-    $this->assertEquals('', $this->newFixture()->getBuffer());
+    Assert::equals('', $this->newFixture()->getBuffer());
   }
 
   #[Test]
   public function append_one_message() {
     $fixture= $this->newFixture();
     $fixture->append($this->newEvent(\util\log\LogLevel::WARN, 'Test'));
-    $this->assertEquals(
+    Assert::equals(
       "[warn] Test\n",
       $fixture->getBuffer()
     );
@@ -35,7 +36,7 @@ class BufferedAppenderTest extends AppenderTest {
     $fixture= $this->newFixture();
     $fixture->append($this->newEvent(\util\log\LogLevel::WARN, 'Test'));
     $fixture->append($this->newEvent(\util\log\LogLevel::INFO, 'Just testing'));
-    $this->assertEquals(
+    Assert::equals(
       "[warn] Test\n[info] Just testing\n",
       $fixture->getBuffer()
     );
@@ -45,7 +46,7 @@ class BufferedAppenderTest extends AppenderTest {
   public function clear() {
     $fixture= $this->newFixture();
     $fixture->clear();
-    $this->assertEquals('', $fixture->getBuffer());
+    Assert::equals('', $fixture->getBuffer());
   }
 
   #[Test]
@@ -53,6 +54,6 @@ class BufferedAppenderTest extends AppenderTest {
     $fixture= $this->newFixture();
     $fixture->append($this->newEvent(\util\log\LogLevel::WARN, 'Test'));
     $fixture->clear();
-    $this->assertEquals('', $fixture->getBuffer());
+    Assert::equals('', $fixture->getBuffer());
   }
 }

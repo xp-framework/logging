@@ -1,7 +1,8 @@
 <?php namespace util\log\unittest;
 
 use io\streams\MemoryOutputStream;
-use unittest\{Test, TestCase, Values};
+use test\Assert;
+use test\{Test, TestCase, Values};
 use util\cmd\Console;
 use util\log\{ConsoleAppender, Layout, LogCategory, LoggingEvent};
 
@@ -11,7 +12,7 @@ use util\log\{ConsoleAppender, Layout, LogCategory, LoggingEvent};
  * @see   xp://util.cmd.Console
  * @see   xp://util.log.ConsoleAppender
  */
-class ConsoleAppenderTest extends TestCase {
+class ConsoleAppenderTest {
 
   /**
    * Creates a ConsoleAppender with a given target
@@ -41,7 +42,7 @@ class ConsoleAppenderTest extends TestCase {
 
   #[Test]
   public function writes_to_stdout_by_default() {
-    $this->assertEquals(Console::$out, (new ConsoleAppender())->writer());
+    Assert::equals(Console::$out, (new ConsoleAppender())->writer());
   }
 
   #[Test]
@@ -53,7 +54,7 @@ class ConsoleAppenderTest extends TestCase {
 
     try {
       $this->category('err')->warn('Test');
-      $this->assertEquals('[LOG] Test', $stream->bytes());
+      Assert::equals('[LOG] Test', $stream->bytes());
     } finally {
       Console::$err->redirect($err);
     }
@@ -68,7 +69,7 @@ class ConsoleAppenderTest extends TestCase {
 
     try {
       $this->category('out')->warn('Test');
-      $this->assertEquals('[LOG] Test', $stream->bytes());
+      Assert::equals('[LOG] Test', $stream->bytes());
     } finally {
       Console::$out->redirect($out);
     }

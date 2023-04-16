@@ -1,6 +1,7 @@
 <?php namespace util\log\unittest;
 
-use unittest\Test;
+use test\Assert;
+use test\Test;
 use util\log\layout\PatternLayout;
 use util\log\{LogLevel, SmtpAppender};
 
@@ -27,7 +28,7 @@ class SmtpAppenderTest extends AppenderTest {
   public function append_sync() {
     $fixture= $this->newFixture('test', $sync= true);
     $fixture->append($this->newEvent(LogLevel::WARN, 'Test'));
-    $this->assertEquals([['test', '[warn] Test']], $fixture->sent);
+    Assert::equals([['test', '[warn] Test']], $fixture->sent);
   }
 
   #[Test]
@@ -35,7 +36,7 @@ class SmtpAppenderTest extends AppenderTest {
     $fixture= $this->newFixture('test', $sync= true);
     $fixture->append($this->newEvent(LogLevel::WARN, 'Test'));
     $fixture->append($this->newEvent(LogLevel::INFO, 'Just testing'));
-    $this->assertEquals(
+    Assert::equals(
       [['test', '[warn] Test'], ['test', '[info] Just testing']],
       $fixture->sent
     );
@@ -47,21 +48,21 @@ class SmtpAppenderTest extends AppenderTest {
     $fixture->append($this->newEvent(LogLevel::WARN, 'Test'));
     $sent= $fixture->sent;
     $fixture->finalize();
-    $this->assertEquals($sent, $fixture->sent);
+    Assert::equals($sent, $fixture->sent);
   }
 
   #[Test]
   public function append_async() {
     $fixture= $this->newFixture('test', $sync= false);
     $fixture->append($this->newEvent(LogLevel::WARN, 'Test'));
-    $this->assertEquals([], $fixture->sent);
+    Assert::equals([], $fixture->sent);
   }
 
   #[Test]
   public function finalize_async_no_messages() {
     $fixture= $this->newFixture('test', $sync= false);
     $fixture->finalize();
-    $this->assertEquals([], $fixture->sent);
+    Assert::equals([], $fixture->sent);
   }
 
   #[Test]
@@ -69,7 +70,7 @@ class SmtpAppenderTest extends AppenderTest {
     $fixture= $this->newFixture('test', $sync= false);
     $fixture->append($this->newEvent(LogLevel::WARN, 'Test'));
     $fixture->finalize();
-    $this->assertEquals(
+    Assert::equals(
       [['test [1 entries]', "[warn] Test\n"]],
       $fixture->sent
     );
@@ -81,7 +82,7 @@ class SmtpAppenderTest extends AppenderTest {
     $fixture->append($this->newEvent(LogLevel::WARN, 'Test'));
     $fixture->append($this->newEvent(LogLevel::INFO, 'Just testing'));
     $fixture->finalize();
-    $this->assertEquals(
+    Assert::equals(
       [['test [2 entries]', "[warn] Test\n[info] Just testing\n"]],
       $fixture->sent
     );

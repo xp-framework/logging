@@ -1,45 +1,47 @@
 <?php namespace util\log\unittest;
 
-use io\streams\MemoryOutputStream;
-use unittest\{Test, TestCase};
+use io\streams\{MemoryOutputStream, OutputStream};
+use test\{Assert, Test};
 use util\log\layout\PatternLayout;
 use util\log\{LogCategory, StreamAppender};
 
-class StreamAppenderTest extends TestCase {
-  private $out, $cat;
+class StreamAppenderTest {
 
-  /**
-   * Sets up test case
-   *
-   */
-  public function setUp() {
-    $this->out= new MemoryOutputStream();
-    $this->cat= (new LogCategory('default'))->withAppender(
-      (new StreamAppender($this->out))->withLayout(new PatternLayout('%l: %m%n'))
-    );
+  /** Returns log category */
+  private function category(OutputStream $out) {
+    $appender= new StreamAppender($out);
+    return (new LogCategory('test'))->withAppender($appender->withLayout(new PatternLayout('%l: %m%n')));
   }
   
   #[Test]
   public function debug() {
-    $this->cat->debug('Hello');
-    $this->assertEquals("debug: Hello\n", $this->out->bytes());
+    $out= new MemoryOutputStream();
+    $this->category($out)->debug('Hello');
+
+    Assert::equals("debug: Hello\n", $out->bytes());
   }
  
   #[Test]
   public function info() {
-    $this->cat->info('Hello');
-    $this->assertEquals("info: Hello\n", $this->out->bytes());
+    $out= new MemoryOutputStream();
+    $this->category($out)->info('Hello');
+
+    Assert::equals("info: Hello\n", $out->bytes());
   }
 
   #[Test]
   public function warn() {
-    $this->cat->warn('Hello');
-    $this->assertEquals("warn: Hello\n", $this->out->bytes());
+    $out= new MemoryOutputStream();
+    $this->category($out)->warn('Hello');
+
+    Assert::equals("warn: Hello\n", $out->bytes());
   }
 
   #[Test]
   public function error() {
-    $this->cat->error('Hello');
-    $this->assertEquals("error: Hello\n", $this->out->bytes());
+    $out= new MemoryOutputStream();
+    $this->category($out)->error('Hello');
+
+    Assert::equals("error: Hello\n", $out->bytes());
   }
 }

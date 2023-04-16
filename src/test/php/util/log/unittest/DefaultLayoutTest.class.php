@@ -1,21 +1,23 @@
 <?php namespace util\log\unittest;
 
 use lang\Value;
-use unittest\{Test, TestCase};
+use test\{Assert, Before, Test};
 use util\log\layout\DefaultLayout;
 use util\log\{LogCategory, LogLevel, LoggingEvent};
 
-class DefaultLayoutTest extends \unittest\TestCase {
+class DefaultLayoutTest {
   private $fixture, $tz;
 
-  /** @return void */
+  #[Before]
   public function setUp() {
     $this->fixture= new DefaultLayout();
+
+    // Save timezone, it will be restored inside tearDown()
     $this->tz= date_default_timezone_get();
     date_default_timezone_set('Europe/Berlin');
   }
 
-  /** @return void */
+  #[After]
   public function tearDown() {
     date_default_timezone_set($this->tz);
   }
@@ -27,13 +29,13 @@ class DefaultLayoutTest extends \unittest\TestCase {
    * @param   string message
    * @return  util.log.LoggingEvent
    */
-  public function newEvent($level, $args) {
+  private function newEvent($level, $args) {
     return new LoggingEvent(new LogCategory('test'), 0, 0, $level, $args);
   }
 
   #[Test]
   public function debug() {
-    $this->assertEquals(
+    Assert::equals(
       "[01:00:00     0 debug] Test\n",
       $this->fixture->format($this->newEvent(LogLevel::DEBUG, ['Test']))
     );
@@ -41,7 +43,7 @@ class DefaultLayoutTest extends \unittest\TestCase {
 
   #[Test]
   public function info() {
-    $this->assertEquals(
+    Assert::equals(
       "[01:00:00     0  info] Test\n",
       $this->fixture->format($this->newEvent(LogLevel::INFO, ['Test']))
     );
@@ -49,7 +51,7 @@ class DefaultLayoutTest extends \unittest\TestCase {
 
   #[Test]
   public function warn() {
-    $this->assertEquals(
+    Assert::equals(
       "[01:00:00     0  warn] Test\n",
       $this->fixture->format($this->newEvent(LogLevel::WARN, ['Test']))
     );
@@ -57,7 +59,7 @@ class DefaultLayoutTest extends \unittest\TestCase {
 
   #[Test]
   public function error() {
-    $this->assertEquals(
+    Assert::equals(
       "[01:00:00     0 error] Test\n",
       $this->fixture->format($this->newEvent(LogLevel::ERROR, ['Test']))
     );
