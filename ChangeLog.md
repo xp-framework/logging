@@ -3,6 +3,8 @@ Logging change log
 
 ## ?.?.? / ????-??-??
 
+* Merged PR #17: Migrate to new testing library - @thekid
+
 ## 11.0.0 / 2021-10-21
 
 * Made compatible with PHP 8.1 by replacing calls to the now-deprecated
