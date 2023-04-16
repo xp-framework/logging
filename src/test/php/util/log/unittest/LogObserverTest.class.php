@@ -1,10 +1,11 @@
 <?php namespace util\log\unittest;
 
-use unittest\{Test, TestCase};
+use test\Assert;
+use test\{Test, TestCase};
 use util\Observable;
 use util\log\{LogCategory, LogObserver};
 
-class LogObserverTest extends TestCase {
+class LogObserverTest {
 
   #[Test]
   public function can_create() {
@@ -19,6 +20,6 @@ class LogObserverTest extends TestCase {
     ]));
     $l->update(new Observable(), 'Test');
 
-    $this->assertEquals([['Test']], $called);
+    Assert::equals([['Test']], $called);
   }
 }

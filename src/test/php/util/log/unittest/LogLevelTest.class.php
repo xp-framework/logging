@@ -1,34 +1,35 @@
 <?php namespace util\log\unittest;
 
 use lang\IllegalArgumentException;
-use unittest\{Expect, Test};
+use test\Assert;
+use test\{Expect, Test};
 use util\log\LogLevel;
 
-class LogLevelTest extends \unittest\TestCase {
+class LogLevelTest {
 
   #[Test]
   public function named_info() {
-    $this->assertEquals(LogLevel::INFO, LogLevel::named('INFO'));
+    Assert::equals(LogLevel::INFO, LogLevel::named('INFO'));
   }
 
   #[Test]
   public function named_warn() {
-    $this->assertEquals(LogLevel::WARN, LogLevel::named('WARN'));
+    Assert::equals(LogLevel::WARN, LogLevel::named('WARN'));
   }
 
   #[Test]
   public function named_error() {
-    $this->assertEquals(LogLevel::ERROR, LogLevel::named('ERROR'));
+    Assert::equals(LogLevel::ERROR, LogLevel::named('ERROR'));
   }
 
   #[Test]
   public function named_debug() {
-    $this->assertEquals(LogLevel::DEBUG, LogLevel::named('DEBUG'));
+    Assert::equals(LogLevel::DEBUG, LogLevel::named('DEBUG'));
   }
 
   #[Test]
   public function named_all() {
-    $this->assertEquals(LogLevel::ALL, LogLevel::named('ALL'));
+    Assert::equals(LogLevel::ALL, LogLevel::named('ALL'));
   }
 
   #[Test, Expect(IllegalArgumentException::class)]
@@ -38,22 +39,22 @@ class LogLevelTest extends \unittest\TestCase {
 
   #[Test]
   public function nameOf_info() {
-    $this->assertEquals('INFO', LogLevel::nameOf(LogLevel::INFO));
+    Assert::equals('INFO', LogLevel::nameOf(LogLevel::INFO));
   }
 
   #[Test]
   public function nameOf_warn() {
-    $this->assertEquals('WARN', LogLevel::nameOf(LogLevel::WARN));
+    Assert::equals('WARN', LogLevel::nameOf(LogLevel::WARN));
   }
 
   #[Test]
   public function nameOf_error() {
-    $this->assertEquals('ERROR', LogLevel::nameOf(LogLevel::ERROR));
+    Assert::equals('ERROR', LogLevel::nameOf(LogLevel::ERROR));
   }
 
   #[Test]
   public function nameOf_debug() {
-    $this->assertEquals('DEBUG', LogLevel::nameOf(LogLevel::DEBUG));
+    Assert::equals('DEBUG', LogLevel::nameOf(LogLevel::DEBUG));
   }
 
   #[Test, Expect(IllegalArgumentException::class)]

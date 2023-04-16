@@ -1,51 +1,30 @@
 <?php namespace util\log\unittest;
 
 use io\streams\{MemoryOutputStream, Streams};
-use unittest\{BeforeClass, Test};
+use test\{After, Assert, Before, Test};
 use util\log\layout\PatternLayout;
 use util\log\{FileAppender, LogLevel};
 
-/**
- * TestCase for FileAppender
- *
- * @see   xp://util.log.FileAppender
- */
 class FileAppenderTest extends AppenderTest {
   private $tz;
 
-  /**
-   * Defines stream wrapper
-   */
-  #[BeforeClass]
-  public static function registerStreamWrapper() {
-    stream_wrapper_register('mem', MemoryMapped::class);
-  }
-
-  /**
-   * Sets up test case.
-   *
-   * @return void
-   */
+  #[Before]
   public function setUp() {
+    stream_wrapper_register('mem', MemoryMapped::class);
+
+    // Save timezone, it will be restored inside tearDown()
     $this->tz= date_default_timezone_get();
     date_default_timezone_set('Europe/Berlin');
   }
 
-  /**
-   * Tears down test
-   *
-   * @return void
-   */
+  #[After]
   public function tearDown() {
+    stream_wrapper_unregister('mem');
     date_default_timezone_set($this->tz);
   }
 
-  /**
-   * Creates new appender fixture
-   *
-   * @return  util.log.BufferedAppender
-   */
-  protected function newFixture() {
+  /** @return  util.log.BufferedAppender */
+  private function newFixture() {
     return (new FileAppender('mem://'.$this->name))->withLayout(new PatternLayout("[%l] %m\n"));
   }
 
@@ -53,7 +32,7 @@ class FileAppenderTest extends AppenderTest {
   public function append_one_message() {
     $fixture= $this->newFixture();
     $fixture->append($this->newEvent(LogLevel::WARN, 'Test'));
-    $this->assertEquals(
+    Assert::equals(
       "[warn] Test\n",
       file_get_contents($fixture->filename)
     );
@@ -64,7 +43,7 @@ class FileAppenderTest extends AppenderTest {
     $fixture= $this->newFixture();
     $fixture->append($this->newEvent(LogLevel::WARN, 'Test'));
     $fixture->append($this->newEvent(LogLevel::INFO, 'Just testing'));
-    $this->assertEquals(
+    Assert::equals(
       "[warn] Test\n[info] Just testing\n",
       file_get_contents($fixture->filename)
     );
@@ -75,14 +54,15 @@ class FileAppenderTest extends AppenderTest {
     $fixture= $this->newFixture();
     $fixture->perms= '0640';  // -rw-r-----
     $fixture->append($this->newEvent(LogLevel::WARN, 'Test'));
-    $this->assertEquals(0640, fileperms($fixture->filename));
+    Assert::equals(0640, fileperms($fixture->filename));
   }
 
   #[Test]
   public function chmod_not_called_without_initializing_perms() {
     $fixture= $this->newFixture();
+    $perms= fileperms($fixture->filename);
     $fixture->append($this->newEvent(LogLevel::WARN, 'Test'));
-    $this->assertEquals(0666, fileperms($fixture->filename));
+    Assert::equals($perms, fileperms($fixture->filename));
   }
 
   #[Test]
@@ -98,7 +78,7 @@ class FileAppenderTest extends AppenderTest {
     $fixture->append($this->newEvent(LogLevel::INFO, 'One'));
     $fixture->append($this->newEvent(LogLevel::INFO, 'Two'));
 
-    $this->assertEquals(
+    Assert::equals(
       ['fn1' => true, 'fn2' => true, 'fn3' => false],
       ['fn1' => file_exists('mem://fn01'), 'fn2' => file_exists('mem://fn02'), 'fn3' => file_exists('mem://fn03')]
     );
@@ -111,6 +91,6 @@ class FileAppenderTest extends AppenderTest {
     $fixture->syncDate= false;
 
     $fixture->filename();
-    $this->assertFalse(strpos($fixture->filename, '%'));
+    Assert::false(strpos($fixture->filename, '%'));
   }
 }

@@ -11,7 +11,7 @@
   },
   "require-dev" : {
     "xp-framework/collections": "^10.0 | ^9.0 | ^8.0",
-    "xp-framework/unittest": "^11.0 | ^10.0"
+    "xp-framework/test": "^1.0"
   },
   "autoload" : {
     "files" : ["src/main/php/autoload.php"]
