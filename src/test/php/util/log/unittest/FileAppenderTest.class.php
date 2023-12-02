@@ -23,9 +23,9 @@ class FileAppenderTest extends AppenderTest {
     date_default_timezone_set($this->tz);
   }
 
-  /** @return  util.log.BufferedAppender */
+  /** @return util.log.BufferedAppender */
   private function newFixture() {
-    return (new FileAppender('mem://'.$this->name))->withLayout(new PatternLayout("[%l] %m\n"));
+    return (new FileAppender('mem://file'))->withLayout(new PatternLayout("[%l] %m\n"));
   }
 
   #[Test]
