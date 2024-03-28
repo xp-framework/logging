@@ -3,13 +3,14 @@ Logging change log
 
 ## ?.?.? / ????-??-??
 
+## 11.2.0 / 2024-03-28
+
 * Changed to use reflection library inside `util.log.LogConfiguration`
   (@thekid)
 
 ## 11.1.0 / 2024-03-24
 
 * Made compatible with XP 12 - @thekid
-
 * Merged PR #17: Migrate to new testing library - @thekid
 
 ## 11.0.0 / 2021-10-21
