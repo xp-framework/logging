@@ -67,7 +67,13 @@ class LogConfiguration {
     // Class
     if ($class= $properties->readString($section, 'class', null)) {
       try {
-        $appender= Reflection::type($class)->newInstance(...$properties->readArray($section, 'args', []));
+        $type= Reflection::type($class);
+        if ($ctor= $type->constructor()) {
+          $appender= $ctor->newInstance($properties->readArray($section, 'args', []));
+        } else {
+          $appender= $type->newInstance();
+        }
+
         if ($layout= $properties->readString($section, 'layout', null)) {
           if (false !== ($p= strcspn($layout, '('))) {
             $appender->setLayout(Reflection::type(substr($layout, 0, $p))->newInstance(...eval(
