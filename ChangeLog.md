@@ -3,6 +3,9 @@ Logging change log
 
 ## ?.?.? / ????-??-??
 
+* Changed to use reflection library inside `util.log.LogConfiguration`
+  (@thekid)
+
 ## 11.1.0 / 2024-03-24
 
 * Made compatible with XP 12 - @thekid

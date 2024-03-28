@@ -1,6 +1,6 @@
 <?php namespace util\log;
 
-use lang\{FormatException, IllegalArgumentException, Throwable, XPClass};
+use lang\{FormatException, IllegalArgumentException, Throwable, Reflection};
 use util\PropertyAccess;
 
 /**
@@ -47,34 +47,6 @@ class LogConfiguration {
   }
 
   /**
-   * Creates a new log appender from a class and arguments, which are either
-   * a list matching the constructor argument order or a map of named arguments.
-   *
-   * @param  lang.XPClass $class
-   * @param  var[]|[:var] $args
-   * @return util.log.LogAppender
-   * @throws lang.FormatException
-   */
-  private function newAppender($class, $args) {
-    if (null === ($c= $class->getConstructor())) {
-      return $class->newInstance();
-    } else if (0 === key($args)) {
-      return $c->newInstance($args);
-    } else {
-      $pass= [];
-      foreach ($c->getParameters() as $param) {
-        $name= $param->getName();
-        $pass[]= $args[$name] ?? $param->getDefaultValue();
-        unset($args[$name]);
-      }
-      if ($args) {
-        throw new FormatException('Unknown named argument(s) '.implode(', ', array_keys($args)));
-      }
-      return $c->newInstance($pass);
-    }
-  }
-
-  /**
    * Returns log appenders for a given property file section
    *
    * @param  util.PropertyAccess $properties
@@ -95,14 +67,14 @@ class LogConfiguration {
     // Class
     if ($class= $properties->readString($section, 'class', null)) {
       try {
-        $appender= $this->newAppender(XPClass::forName($class), $properties->readArray($section, 'args', []));
+        $appender= Reflection::type($class)->newInstance(...$properties->readArray($section, 'args', []));
         if ($layout= $properties->readString($section, 'layout', null)) {
           if (false !== ($p= strcspn($layout, '('))) {
-            $appender->setLayout(XPClass::forName(substr($layout, 0, $p))->newInstance(...eval(
+            $appender->setLayout(Reflection::type(substr($layout, 0, $p))->newInstance(...eval(
               'return ['.substr($layout, $p + 1, -1).'];'
             )));
           } else {
-            $appender->setLayout(XPClass::forName($layout)->newInstance());
+            $appender->setLayout(Reflection::type($layout)->newInstance());
           }
         }
       } catch (Throwable $e) {
