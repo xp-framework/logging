@@ -3,6 +3,12 @@ Logging change log
 
 ## ?.?.? / ????-??-??
 
+## 11.3.0 / 2026-01-06
+
+* Merged PR #18: Fix nesting of deeply structured arrays and objects
+  (@thekid)
+* Added PHP 8.5 and 8.6 to the test matrix - @thekid
+
 ## 11.2.0 / 2024-03-28
 
 * Changed to use reflection library inside `util.log.LogConfiguration`
