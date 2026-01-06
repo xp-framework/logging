@@ -1,11 +1,11 @@
 <?php namespace util\log;
 
-use lang\{Generic, Value};
+use lang\Value;
 
 /**
  * Takes care of formatting log entries
  *
- * @test  xp://util.log.unittest.LayoutTest
+ * @test  util.log.unittest.LayoutTest
  */
 abstract class Layout {
 
@@ -24,12 +24,11 @@ abstract class Layout {
       return 'true';
     } else if (is_string($arg)) {
       return '' === $indent ? $arg : '"'.$arg.'"';
-    } else if ($arg instanceof Value || $arg instanceof Generic) {
+    } else if ($arg instanceof Value) {
       return $arg->toString();
     } else if ([] === $arg) {
       return '[]';
     } else if (is_array($arg)) {
-      $indent.= '  ';
       if (0 === key($arg)) {
         $r= '';
         foreach ($arg as $value) {
@@ -37,21 +36,22 @@ abstract class Layout {
         }
         return '['.substr($r, 2).']';
       } else {
+        $n= $indent.'  ';
         $r= '[';
         foreach ($arg as $key => $value) {
-          $r.= "\n".$indent.$key.' => '.$this->stringOf($value, $indent);
+          $r.= "\n{$n}{$key} => ".$this->stringOf($value, $n);
         }
-        return $r."\n]";
+        return $r."\n{$indent}]";
       }
     } else if ($arg instanceof \Closure) {
       return $arg();
     } else if (is_object($arg)) {
-      $indent.= '  ';
+      $n= $indent.'  ';
       $r= nameof($arg).'@{';
       foreach ((array)$arg as $key => $value) {
-        $r.= "\n".$indent.$key.' => '.$this->stringOf($value, $indent);
+        $r.= "\n{$n}{$key} => ".$this->stringOf($value, $n);
       }
-      return $r."\n}";
+      return $r."\n{$indent}}";
     } else {
       return (string)$arg;
     }
